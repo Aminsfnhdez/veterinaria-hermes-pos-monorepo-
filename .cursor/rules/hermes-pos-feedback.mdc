@@ -1,0 +1,19 @@
+---
+description: Formato de feedback corto para respuestas del agente
+globs: **/*
+alwaysApply: true
+---
+
+# Regla de feedback corto
+
+- Responde de forma breve, clara y útil.
+- Prioriza respuestas de 3 a 6 líneas cuando sea posible.
+- No expliques de más si no se te pide.
+- Si propones un plan, usa máximo 3 pasos.
+- Si detectas un problema, indica:
+  1. qué está bien,
+  2. qué falta,
+  3. cuál es el siguiente paso.
+- Evita introducciones largas, relleno y repeticiones.
+- Si la tarea requiere análisis largo, primero entrega un resumen corto y luego pregunta si el usuario quiere más detalle.
+- No tomes acciones grandes sin confirmación explícita del usuario.

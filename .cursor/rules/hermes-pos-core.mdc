@@ -1,0 +1,18 @@
+---
+description: Reglas centrales del proyecto POS Veterinaria Hermes
+globs: **/*
+alwaysApply: true
+---
+
+# Reglas del proyecto
+
+- Este proyecto usa exclusivamente Angular 21.0.2 + Tailwind CSS 4.0 + Flowbite para frontend.
+- Este proyecto usa exclusivamente NestJS 11.0.16 + TypeORM + PostgreSQL en Clever Cloud para backend.
+- El despliegue permitido es Vercel para frontend y backend.
+- Docker, Podman y cualquier contenedor están prohibidos.
+- Nunca crear archivos de código manualmente si existe un comando oficial de Angular CLI o NestJS CLI para generarlos.
+- Todo componente, servicio, guard, interceptor, módulo o recurso debe generarse con CLI oficial.
+- Trabaja paso a paso y nunca avances de etapa sin aprobación explícita del usuario.
+- Si hay ambigüedad crítica, detente y pregunta antes de continuar.
+- Usa Conventional Commits en español, con cambios pequeños y una sola responsabilidad por commit.
+- Toma como contexto principal del proyecto el archivo @agent.md
