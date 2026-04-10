@@ -54,3 +54,5 @@ Commits pequeños y granulares. Máximo 5 archivos por commit.
 ## Contexto para agentes
 
 El archivo **`AGENTS.md`** es el contexto principal que deben cargar los agentes de desarrollo (OpenCode, Claude Code, Cursor) al inicio de cada sesión.
+
+> **Nota:** `agent.md` es una versión anterior. `AGENTS.md` contiene toda su información consolidada y es el archivo canonical a usar.
