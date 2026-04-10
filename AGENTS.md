@@ -12,7 +12,7 @@
 | 1-3 | ✅ Completadas (Modelado, Schema, Config) |
 | 4 | ✅ Completada (Módulos, Servicios, Controladores) |
 | 5 | ✅ Completada (Auth JWT + RBAC) |
-| 6 | ⏳ Pendiente (Facturación PDF) |
+| 6 | ✅ Completada (Facturación PDF en memoria) |
 | 7-10 | ⏳ Pendientes |
 
 ---
