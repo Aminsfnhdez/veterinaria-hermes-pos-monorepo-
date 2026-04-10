@@ -50,3 +50,7 @@ frontend/.angular/
 
 # Tests
 **/coverage/
+
+# IDEs
+.vscode/settings.json
+.idea/
