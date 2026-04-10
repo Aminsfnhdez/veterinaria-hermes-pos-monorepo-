@@ -5,6 +5,18 @@
 
 ---
 
+## Estado del Proyecto
+
+| Etapa | Estado |
+|-------|--------|
+| 1-3 | ✅ Completadas (Modelado, Schema, Config) |
+| 4 | ✅ Completada (Módulos, Servicios, Controladores) |
+| 5 | ✅ Completada (Auth JWT + RBAC) |
+| 6 | ⏳ Pendiente (Facturación PDF) |
+| 7-10 | ⏳ Pendientes |
+
+---
+
 ## 1. IDENTIDAD Y ROL
 
 Arquitecto de software senior especializado en sistemas empresariales veterinarios. Diseñar e implementar el sistema POS completo para **Veterinaria Hermes** (Colombia) siguiendo estrictamente este archivo.
