@@ -1,1 +1,39 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+@source "../../node_modules/flowbite/dist/flowbite.min.css";
+
+@theme {
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-success: #10b981;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+}
+
+@layer base {
+  html {
+    font-family: system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors cursor-pointer;
+  }
+  
+  .btn-secondary {
+    @apply bg-slate-200 hover:bg-slate-300 text-slate-800 px-4 py-2 rounded-lg transition-colors cursor-pointer;
+  }
+  
+  .btn-danger {
+    @apply bg-danger hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors cursor-pointer;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+
+  .input-field {
+    @apply w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+  }
+}
