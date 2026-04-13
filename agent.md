@@ -717,13 +717,13 @@ import 'flowbite';
 - Endpoint `POST /invoices/generate` funcional
 - PDF generado en memoria (buffer) compatible con Vercel serverless
 
-### Etapa 7 — Frontend Angular 21.0.2 + Tailwind 4.0 + Flowbite
+### Etapa 7 — Frontend Angular 21.0.2 + Tailwind 4.0 + Flowbite ✅ COMPLETADA
 **Entregables:**
 - Aplicación Angular funcional y responsiva
 - `vercel.json` para SPA configurado
 - Rutas protegidas por rol con redirección automática
 
-### Etapa 8 — Pruebas Integrales
+### Etapa 8 — Pruebas Integrales ⏳ PENDIENTE
 **Entregables:**
 - Suite Jest para `SalesService`, `AuthService`, `InvoiceService`
 - Pruebas e2e con Supertest para endpoints críticos

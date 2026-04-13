@@ -13,7 +13,8 @@
 | 4 | ✅ Completada (Módulos, Servicios, Controladores) |
 | 5 | ✅ Completada (Auth JWT + RBAC) |
 | 6 | ✅ Completada (Facturación PDF en memoria) |
-| 7-10 | ⏳ Pendientes |
+| 7 | ✅ Completada (Frontend Angular + Tailwind + Flowbite) |
+| 8-10 | ⏳ Pendientes |
 
 ---
 
