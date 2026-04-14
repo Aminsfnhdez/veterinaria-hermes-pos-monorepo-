@@ -300,9 +300,9 @@ chore(frontend): configurar Tailwind CSS 4
 | 5 | ✅ | Autenticación RBAC |
 | 6 | ✅ | Facturación PDF |
 | 7 | ✅ | Frontend Angular + Tailwind |
-| 8 | ⏳ | **Pruebas Jest (70% coverage)** |
-| 9 | ⏳ | Documentación final |
-| 10 | ⏳ | Consolidación |
+| 8 | ✅ | Tests Jest (51 unit, >80% cobertura) |
+| 9 | ✅ | Documentación y Despliegue |
+| 10 | ⏳ | Consolidación final |
 
 ---
 
@@ -321,4 +321,4 @@ chore(frontend): configurar Tailwind CSS 4
 
 ---
 
-**Estado actual:** Listo para **Etapa 8 - Pruebas Jest (cobertura 70%)**.
+**Estado actual:** Etapa 9 completada. Swagger en `/api`, READMEs completos. Listo para **Etapa 10 - Consolidación final**.

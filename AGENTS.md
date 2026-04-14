@@ -15,7 +15,7 @@
 | 6 | ✅ Completada (Facturación PDF en memoria) |
 | 7 | ✅ Completada (Frontend Angular + Tailwind + Flowbite) |
 | 8 | ✅ Completada (Tests Jest: 51 unit tests, >80% cobertura servicios críticos) |
-| 9 | ⏳ Pendiente (Documentación + Despliegue) |
+| 9 | ✅ Completada (Swagger /api/docs, READMEs, Deploy Vercel + Clever Cloud) |
 | 10 | ⏳ Pendiente (Consolidación final) |
 
 ### Cobertura de Tests (Etapa 8)
@@ -29,7 +29,7 @@
 
 **Nota e2e:** Los tests e2e requieren configuración de BD adicional debido al límite de conexiones de Clever Cloud. Documentado, no crítico para v1.
 
-**Commits Etapas 7-8:** 26 commits (21 en Etapa 7 + 5 en Etapa 8)
+**Commits Etapas 7-9:** 28 commits (21 en Etapa 7 + 5 en Etapa 8 + 2 en Etapa 9)
 
 ---
 

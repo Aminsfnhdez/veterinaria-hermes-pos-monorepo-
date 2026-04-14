@@ -739,13 +739,14 @@ import 'flowbite';
 
 **Nota e2e:** Tests e2e requieren configuración de BD adicional por límite de conexiones de Clever Cloud. Documentado, no crítico para v1.
 
-### Etapa 9 — Documentación y Despliegue ⏳ PENDIENTE
+### Etapa 9 — Documentación y Despliegue ✅ COMPLETADA
 **Entregables:**
-- Swagger completo en `/api/docs`
-- `README.md` completo en ambos repositorios
-- Guía de despliegue Vercel + Clever Cloud
+- Swagger completo en `/api`
+- `README.md` completo en backend y frontend
+- Guía de despliegue Vercel + Clever Cloud en READMEs
+- vercel.json configurados
 
-### Etapa 10 — Archivo agent.md *(este archivo)*
+### Etapa 10 — Archivo agent.md *(este archivo)* ⏳ PENDIENTE
 **Entregables:**
 - `agent.md` completo, versionado en la raíz del repositorio
 - Funciona como contexto standalone en Claude Code, Cursor o antigravity
