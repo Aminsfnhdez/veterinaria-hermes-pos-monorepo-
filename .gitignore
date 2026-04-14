@@ -54,3 +54,6 @@ frontend/.angular/
 # IDEs
 .vscode/settings.json
 .idea/
+
+# Backend
+backend/.env

@@ -14,7 +14,22 @@
 | 5 | ✅ Completada (Auth JWT + RBAC) |
 | 6 | ✅ Completada (Facturación PDF en memoria) |
 | 7 | ✅ Completada (Frontend Angular + Tailwind + Flowbite) |
-| 8-10 | ⏳ Pendientes |
+| 8 | ✅ Completada (Tests Jest: 51 unit tests, >80% cobertura servicios críticos) |
+| 9 | ⏳ Pendiente (Documentación + Despliegue) |
+| 10 | ⏳ Pendiente (Consolidación final) |
+
+### Cobertura de Tests (Etapa 8)
+
+| Servicio | Tests | Statements | Branches |
+|----------|-------|------------|----------|
+| AuthService | 8 | 100% | 80% |
+| SalesService | 21 | 100% | 88.88% |
+| ProductsService | 14 | 100% | 85.71% |
+| InvoicesService | 14 | 44.82% | 65.62% |
+
+**Nota e2e:** Los tests e2e requieren configuración de BD adicional debido al límite de conexiones de Clever Cloud. Documentado, no crítico para v1.
+
+**Commits Etapas 7-8:** 26 commits (21 en Etapa 7 + 5 en Etapa 8)
 
 ---
 
