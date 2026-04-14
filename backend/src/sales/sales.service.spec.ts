@@ -2,7 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
-import { SalesService, CreateSaleDto, CreateSaleItemDto } from './sales.service';
+import {
+  SalesService,
+  CreateSaleDto,
+  CreateSaleItemDto,
+} from './sales.service';
 import { Venta, ItemVenta, EstadoVenta } from './entities';
 import { Product, CategoriaProducto } from '../products/entities/product';
 import { Client } from '../clients/entities/client';
@@ -106,8 +110,14 @@ describe('SalesService', () => {
       providers: [
         SalesService,
         { provide: getRepositoryToken(Venta), useValue: mockVentaRepository },
-        { provide: getRepositoryToken(ItemVenta), useValue: mockItemVentaRepository },
-        { provide: getRepositoryToken(Product), useValue: mockProductRepository },
+        {
+          provide: getRepositoryToken(ItemVenta),
+          useValue: mockItemVentaRepository,
+        },
+        {
+          provide: getRepositoryToken(Product),
+          useValue: mockProductRepository,
+        },
         { provide: DataSource, useValue: mockDataSource },
       ],
     }).compile();
@@ -135,10 +145,14 @@ describe('SalesService', () => {
         fechaCaducidad: new Date(Date.now() + 86400000 * 60),
       });
       mockQueryRunner.manager.create.mockReturnValue(testVenta);
-      mockQueryRunner.manager.save.mockImplementation((entity) => Promise.resolve({ ...entity, id: 'venta-123' }));
+      mockQueryRunner.manager.save.mockImplementation((entity) =>
+        Promise.resolve({ ...entity, id: 'venta-123' }),
+      );
       mockVentaRepository.findOne.mockResolvedValue({
         ...testVenta,
-        itemVentas: [{ cantidad: 2, precioUnitario: 100, subtotal: 200, ivaItem: 38 }],
+        itemVentas: [
+          { cantidad: 2, precioUnitario: 100, subtotal: 200, ivaItem: 38 },
+        ],
       });
 
       const result = await service.createSale(createSaleDto);
@@ -161,7 +175,9 @@ describe('SalesService', () => {
         items: [],
       };
 
-      await expect(service.createSale(emptyDto)).rejects.toThrow(ConflictException);
+      await expect(service.createSale(emptyDto)).rejects.toThrow(
+        ConflictException,
+      );
       await expect(service.createSale(emptyDto)).rejects.toThrow(
         'La venta debe tener al menos un producto',
       );
@@ -170,7 +186,9 @@ describe('SalesService', () => {
     it('debería lanzar NotFoundException cuando producto no existe', async () => {
       mockQueryRunner.manager.findOne.mockResolvedValue(null);
 
-      await expect(service.createSale(createSaleDto)).rejects.toThrow(NotFoundException);
+      await expect(service.createSale(createSaleDto)).rejects.toThrow(
+        NotFoundException,
+      );
       await expect(service.createSale(createSaleDto)).rejects.toThrow(
         'Producto con ID product-123 no encontrado',
       );
@@ -183,7 +201,9 @@ describe('SalesService', () => {
         activo: false,
       });
 
-      await expect(service.createSale(createSaleDto)).rejects.toThrow(ConflictException);
+      await expect(service.createSale(createSaleDto)).rejects.toThrow(
+        ConflictException,
+      );
       await expect(service.createSale(createSaleDto)).rejects.toThrow(
         'El producto "Producto Prueba" ya no está activo',
       );
@@ -197,7 +217,9 @@ describe('SalesService', () => {
         fechaCaducidad: new Date(Date.now() - 86400000),
       });
 
-      await expect(service.createSale(createSaleDto)).rejects.toThrow(ConflictException);
+      await expect(service.createSale(createSaleDto)).rejects.toThrow(
+        ConflictException,
+      );
       await expect(service.createSale(createSaleDto)).rejects.toThrow(
         'El producto "Producto Prueba" está vencido y no puede ser vendido',
       );
@@ -212,7 +234,9 @@ describe('SalesService', () => {
         fechaCaducidad: new Date(Date.now() + 86400000 * 60),
       });
 
-      await expect(service.createSale(createSaleDto)).rejects.toThrow(ConflictException);
+      await expect(service.createSale(createSaleDto)).rejects.toThrow(
+        ConflictException,
+      );
       await expect(service.createSale(createSaleDto)).rejects.toThrow(
         'Stock insuficiente para "Producto Prueba". Disponible: 1, solicitado: 2',
       );
@@ -250,7 +274,9 @@ describe('SalesService', () => {
     it('debería lanzar NotFoundException cuando venta no existe', async () => {
       mockVentaRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.findOne('nonexistent-id')).rejects.toThrow(NotFoundException);
+      await expect(service.findOne('nonexistent-id')).rejects.toThrow(
+        NotFoundException,
+      );
       await expect(service.findOne('nonexistent-id')).rejects.toThrow(
         'Venta con ID nonexistent-id no encontrada',
       );
@@ -259,8 +285,14 @@ describe('SalesService', () => {
 
   describe('cancel()', () => {
     it('debería cancelar venta exitosamente', async () => {
-      mockVentaRepository.findOne.mockResolvedValue({ ...testVenta, estado: EstadoVenta.COMPLETADA });
-      mockVentaRepository.save.mockResolvedValue({ ...testVenta, estado: EstadoVenta.ANULADA });
+      mockVentaRepository.findOne.mockResolvedValue({
+        ...testVenta,
+        estado: EstadoVenta.COMPLETADA,
+      });
+      mockVentaRepository.save.mockResolvedValue({
+        ...testVenta,
+        estado: EstadoVenta.ANULADA,
+      });
 
       const result = await service.cancel('venta-123');
 
@@ -269,16 +301,28 @@ describe('SalesService', () => {
     });
 
     it('debería lanzar ConflictException cuando venta ya está anulada', async () => {
-      mockVentaRepository.findOne.mockResolvedValue({ ...testVenta, estado: EstadoVenta.ANULADA });
+      mockVentaRepository.findOne.mockResolvedValue({
+        ...testVenta,
+        estado: EstadoVenta.ANULADA,
+      });
 
-      await expect(service.cancel('venta-123')).rejects.toThrow(ConflictException);
-      await expect(service.cancel('venta-123')).rejects.toThrow('La venta ya está anulada');
+      await expect(service.cancel('venta-123')).rejects.toThrow(
+        ConflictException,
+      );
+      await expect(service.cancel('venta-123')).rejects.toThrow(
+        'La venta ya está anulada',
+      );
     });
 
     it('debería lanzar ConflictException cuando venta está pendiente', async () => {
-      mockVentaRepository.findOne.mockResolvedValue({ ...testVenta, estado: EstadoVenta.PENDIENTE });
+      mockVentaRepository.findOne.mockResolvedValue({
+        ...testVenta,
+        estado: EstadoVenta.PENDIENTE,
+      });
 
-      await expect(service.cancel('venta-123')).rejects.toThrow(ConflictException);
+      await expect(service.cancel('venta-123')).rejects.toThrow(
+        ConflictException,
+      );
       await expect(service.cancel('venta-123')).rejects.toThrow(
         'No se puede anular una venta pendiente',
       );

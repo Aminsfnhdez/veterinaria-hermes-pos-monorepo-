@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Param, ParseUUIDPipe, UseGuards, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  ParseUUIDPipe,
+  UseGuards,
+  Res,
+} from '@nestjs/common';
 import type { Response } from 'express';
 import { InvoicesService } from './invoices.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -35,7 +44,8 @@ export class InvoicesController {
     @Param('id', ParseUUIDPipe) id: string,
     @Res() res: Response,
   ) {
-    const { pdfBuffer, numeroFactura } = await this.invoicesService.generatePdf(id);
+    const { pdfBuffer, numeroFactura } =
+      await this.invoicesService.generatePdf(id);
 
     res.set({
       'Content-Type': 'application/pdf',

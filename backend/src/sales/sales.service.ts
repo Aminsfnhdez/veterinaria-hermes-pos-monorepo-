@@ -1,4 +1,8 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
 import { Venta, ItemVenta, EstadoVenta } from './entities';
@@ -40,7 +44,13 @@ export class SalesService {
 
     try {
       let subtotal = 0;
-      const ventaItems: { producto: Product; cantidad: number; precioUnitario: number; subtotal: number; ivaItem: number }[] = [];
+      const ventaItems: {
+        producto: Product;
+        cantidad: number;
+        precioUnitario: number;
+        subtotal: number;
+        ivaItem: number;
+      }[] = [];
 
       for (const item of items) {
         const producto = await queryRunner.manager.findOne(Product, {
@@ -49,19 +59,27 @@ export class SalesService {
         });
 
         if (!producto) {
-          throw new NotFoundException(`Producto con ID ${item.productoId} no encontrado`);
+          throw new NotFoundException(
+            `Producto con ID ${item.productoId} no encontrado`,
+          );
         }
 
         if (!producto.activo) {
-          throw new ConflictException(`El producto "${producto.nombre}" ya no está activo`);
+          throw new ConflictException(
+            `El producto "${producto.nombre}" ya no está activo`,
+          );
         }
 
         if (producto.fechaCaducidad && producto.fechaCaducidad <= new Date()) {
-          throw new ConflictException(`El producto "${producto.nombre}" está vencido y no puede ser vendido`);
+          throw new ConflictException(
+            `El producto "${producto.nombre}" está vencido y no puede ser vendido`,
+          );
         }
 
         if (producto.stock < item.cantidad) {
-          throw new ConflictException(`Stock insuficiente para "${producto.nombre}". Disponible: ${producto.stock}, solicitado: ${item.cantidad}`);
+          throw new ConflictException(
+            `Stock insuficiente para "${producto.nombre}". Disponible: ${producto.stock}, solicitado: ${item.cantidad}`,
+          );
         }
 
         const itemSubtotal = Number(producto.precio) * item.cantidad;

@@ -33,7 +33,8 @@ describe('AuthService', () => {
   const testUser: User = {
     id: '123e4567-e89b-12d3-a456-426614174000',
     email: 'admin@hermes.com',
-    passwordHash: '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYqG3N.I/7F6',
+    passwordHash:
+      '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYqG3N.I/7F6',
     nombre: 'Admin User',
     rol: RolUsuario.ADMIN,
     activo: true,
@@ -102,7 +103,9 @@ describe('AuthService', () => {
     it('debería lanzar UnauthorizedException cuando usuario no existe', async () => {
       mockUserRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.login(loginDto)).rejects.toThrow(UnauthorizedException);
+      await expect(service.login(loginDto)).rejects.toThrow(
+        UnauthorizedException,
+      );
       await expect(service.login(loginDto)).rejects.toThrow(
         'Credenciales inválidas',
       );
@@ -121,7 +124,9 @@ describe('AuthService', () => {
       const inactiveUser = { ...testUser, activo: false };
       mockUserRepository.findOne.mockResolvedValue(inactiveUser);
 
-      await expect(service.login(loginDto)).rejects.toThrow(UnauthorizedException);
+      await expect(service.login(loginDto)).rejects.toThrow(
+        UnauthorizedException,
+      );
       await expect(service.login(loginDto)).rejects.toThrow('Usuario inactivo');
     });
   });

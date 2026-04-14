@@ -130,7 +130,10 @@ describe('InvoicesService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         InvoicesService,
-        { provide: getRepositoryToken(Factura), useValue: mockFacturaRepository },
+        {
+          provide: getRepositoryToken(Factura),
+          useValue: mockFacturaRepository,
+        },
         { provide: getRepositoryToken(Venta), useValue: mockVentaRepository },
         { provide: DataSource, useValue: mockDataSource },
       ],
@@ -169,7 +172,9 @@ describe('InvoicesService', () => {
     it('debería lanzar NotFoundException cuando venta no existe', async () => {
       mockVentaRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.generate(createInvoiceDto)).rejects.toThrow(NotFoundException);
+      await expect(service.generate(createInvoiceDto)).rejects.toThrow(
+        NotFoundException,
+      );
       await expect(service.generate(createInvoiceDto)).rejects.toThrow(
         'Venta con ID venta-123 no encontrada',
       );
@@ -179,7 +184,9 @@ describe('InvoicesService', () => {
       mockVentaRepository.findOne.mockResolvedValue(testVenta);
       mockFacturaRepository.findOne.mockResolvedValue(testFactura);
 
-      await expect(service.generate(createInvoiceDto)).rejects.toThrow(ConflictException);
+      await expect(service.generate(createInvoiceDto)).rejects.toThrow(
+        ConflictException,
+      );
       await expect(service.generate(createInvoiceDto)).rejects.toThrow(
         'La venta venta-123 ya tiene una factura asociada',
       );
@@ -207,7 +214,11 @@ describe('InvoicesService', () => {
 
   describe('generateCufe()', () => {
     it('debería generar CUFE con SHA-256 válido', async () => {
-      const result = service.generateCufe('venta-123', 'FE-2026-000001', new Date('2026-01-01'));
+      const result = service.generateCufe(
+        'venta-123',
+        'FE-2026-000001',
+        new Date('2026-01-01'),
+      );
 
       expect(result).toBeDefined();
       expect(result).toHaveLength(64);
@@ -238,16 +249,23 @@ describe('InvoicesService', () => {
     });
 
     it('debería lanzar ConflictException cuando factura está anulada', async () => {
-      const anuladaFactura = { ...testFactura, venta: { ...testVenta, estado: EstadoVenta.ANULADA } };
+      const anuladaFactura = {
+        ...testFactura,
+        venta: { ...testVenta, estado: EstadoVenta.ANULADA },
+      };
       mockFacturaRepository.findOne.mockResolvedValue(anuladaFactura);
 
-      await expect(service.generatePdf('factura-123')).rejects.toThrow(ConflictException);
+      await expect(service.generatePdf('factura-123')).rejects.toThrow(
+        ConflictException,
+      );
     });
 
     it('debería lanzar NotFoundException cuando factura no existe', async () => {
       mockFacturaRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.generatePdf('nonexistent-id')).rejects.toThrow(NotFoundException);
+      await expect(service.generatePdf('nonexistent-id')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -277,7 +295,9 @@ describe('InvoicesService', () => {
     it('debería lanzar NotFoundException cuando factura no existe', async () => {
       mockFacturaRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.findOne('nonexistent-id')).rejects.toThrow(NotFoundException);
+      await expect(service.findOne('nonexistent-id')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -293,7 +313,9 @@ describe('InvoicesService', () => {
     it('debería lanzar NotFoundException cuando no hay factura para venta', async () => {
       mockFacturaRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.findByVenta('nonexistent-venta')).rejects.toThrow(NotFoundException);
+      await expect(service.findByVenta('nonexistent-venta')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });

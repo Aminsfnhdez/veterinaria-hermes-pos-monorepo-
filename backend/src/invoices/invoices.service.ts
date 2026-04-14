@@ -1,11 +1,14 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
 import { Factura, MetodoPago } from './entities/factura';
 import { Venta } from '../sales/entities/venta';
 import { createHash } from 'crypto';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const PDFDocument = require('pdfkit');
 
 export interface CreateInvoiceDto {
@@ -29,7 +32,11 @@ export class InvoicesService {
     private readonly dataSource: DataSource,
   ) {}
 
-  private generateCufe(ventaId: string, numeroFactura: string, fecha: Date): string {
+  private generateCufe(
+    ventaId: string,
+    numeroFactura: string,
+    fecha: Date,
+  ): string {
     const data = `${numeroFactura}${ventaId}${fecha.toISOString()}VeterinariaHermes`;
     return createHash('sha256').update(data).digest('hex').substring(0, 96);
   }
@@ -39,7 +46,7 @@ export class InvoicesService {
     await queryRunner.connect();
     try {
       const result = await queryRunner.query(
-        "SELECT nextval('facturas_seq') as next_val"
+        "SELECT nextval('facturas_seq') as next_val",
       );
       const sequence = Number(result[0].next_val).toString().padStart(6, '0');
       const year = new Date().getFullYear();
@@ -52,7 +59,13 @@ export class InvoicesService {
   async generatePdf(invoiceId: string): Promise<GeneratePdfResponse> {
     const factura = await this.facturaRepository.findOne({
       where: { id: invoiceId },
-      relations: ['venta', 'venta.itemVentas', 'venta.itemVentas.producto', 'venta.cliente', 'venta.usuario'],
+      relations: [
+        'venta',
+        'venta.itemVentas',
+        'venta.itemVentas.producto',
+        'venta.cliente',
+        'venta.usuario',
+      ],
     });
 
     if (!factura) {
@@ -83,7 +96,9 @@ export class InvoicesService {
     // Información de la venta
     doc.fontSize(14).text('Datos de la Venta', { underline: true });
     doc.moveDown();
-    doc.fontSize(10).text(`Fecha: ${factura.fechaEmision.toLocaleDateString()}`);
+    doc
+      .fontSize(10)
+      .text(`Fecha: ${factura.fechaEmision.toLocaleDateString()}`);
     doc.text(`Cliente: ${factura.venta.cliente.nombre}`);
     doc.text(`Identificación: ${factura.venta.cliente.identificacion}`);
     if (factura.venta.cliente.email) {
@@ -108,38 +123,78 @@ export class InvoicesService {
     doc.text('IVA', 400, tableTop, { width: 70, align: 'right' });
     doc.text('Subtotal', 480, tableTop, { width: 70, align: 'right' });
     doc.moveDown();
-    doc.strokeColor('#cccccc').lineWidth(1).moveTo(50, tableTop + 15).lineTo(550, tableTop + 15).stroke();
+    doc
+      .strokeColor('#cccccc')
+      .lineWidth(1)
+      .moveTo(50, tableTop + 15)
+      .lineTo(550, tableTop + 15)
+      .stroke();
 
     let yPosition = tableTop + 25;
     for (const item of factura.venta.itemVentas) {
-      const nombre = item.producto.nombre.length > 25 ? item.producto.nombre.substring(0, 22) + '...' : item.producto.nombre;
+      const nombre =
+        item.producto.nombre.length > 25
+          ? item.producto.nombre.substring(0, 22) + '...'
+          : item.producto.nombre;
       doc.text(nombre, 50, yPosition, { width: 200 });
-      doc.text(item.cantidad.toString(), 250, yPosition, { width: 50, align: 'center' });
-      doc.text(`$${Number(item.precioUnitario).toFixed(2)}`, 310, yPosition, { width: 80, align: 'right' });
-      doc.text(`$${Number(item.ivaItem).toFixed(2)}`, 400, yPosition, { width: 70, align: 'right' });
-      doc.text(`$${Number(item.subtotal).toFixed(2)}`, 480, yPosition, { width: 70, align: 'right' });
+      doc.text(item.cantidad.toString(), 250, yPosition, {
+        width: 50,
+        align: 'center',
+      });
+      doc.text(`$${Number(item.precioUnitario).toFixed(2)}`, 310, yPosition, {
+        width: 80,
+        align: 'right',
+      });
+      doc.text(`$${Number(item.ivaItem).toFixed(2)}`, 400, yPosition, {
+        width: 70,
+        align: 'right',
+      });
+      doc.text(`$${Number(item.subtotal).toFixed(2)}`, 480, yPosition, {
+        width: 70,
+        align: 'right',
+      });
       yPosition += 18;
     }
 
     doc.moveDown(2);
-    doc.strokeColor('#cccccc').lineWidth(1).moveTo(50, yPosition).lineTo(550, yPosition).stroke();
+    doc
+      .strokeColor('#cccccc')
+      .lineWidth(1)
+      .moveTo(50, yPosition)
+      .lineTo(550, yPosition)
+      .stroke();
 
     doc.fontSize(12);
     yPosition += 15;
     doc.text('Subtotal:', 350, yPosition, { width: 100, align: 'right' });
-    doc.text(`$${Number(factura.venta.subtotal).toFixed(2)}`, 480, yPosition, { width: 70, align: 'right' });
+    doc.text(`$${Number(factura.venta.subtotal).toFixed(2)}`, 480, yPosition, {
+      width: 70,
+      align: 'right',
+    });
     yPosition += 18;
     doc.text('IVA (19%):', 350, yPosition, { width: 100, align: 'right' });
-    doc.text(`$${Number(factura.venta.iva).toFixed(2)}`, 480, yPosition, { width: 70, align: 'right' });
+    doc.text(`$${Number(factura.venta.iva).toFixed(2)}`, 480, yPosition, {
+      width: 70,
+      align: 'right',
+    });
     yPosition += 20;
     doc.fontSize(14);
     doc.text('TOTAL A PAGAR:', 350, yPosition, { width: 100, align: 'right' });
-    doc.text(`$${Number(factura.venta.total).toFixed(2)}`, 480, yPosition, { width: 70, align: 'right' });
+    doc.text(`$${Number(factura.venta.total).toFixed(2)}`, 480, yPosition, {
+      width: 70,
+      align: 'right',
+    });
 
     // Pie de página
     doc.moveDown(4);
-    doc.fontSize(8).text('Documento generado electrónicamente - Veterinaria Hermes', { align: 'center' });
-    doc.text('Sistema POS - Facturación Electrónica DIAN (Simulada)', { align: 'center' });
+    doc
+      .fontSize(8)
+      .text('Documento generado electrónicamente - Veterinaria Hermes', {
+        align: 'center',
+      });
+    doc.text('Sistema POS - Facturación Electrónica DIAN (Simulada)', {
+      align: 'center',
+    });
 
     doc.end();
 
@@ -156,7 +211,9 @@ export class InvoicesService {
   async generate(createInvoiceDto: CreateInvoiceDto): Promise<Factura> {
     const { ventaId, metodoPago } = createInvoiceDto;
 
-    const venta = await this.ventaRepository.findOne({ where: { id: ventaId } });
+    const venta = await this.ventaRepository.findOne({
+      where: { id: ventaId },
+    });
     if (!venta) {
       throw new NotFoundException(`Venta con ID ${ventaId} no encontrada`);
     }
@@ -165,7 +222,9 @@ export class InvoicesService {
       where: { ventaId },
     });
     if (existingInvoice) {
-      throw new ConflictException(`La venta ${ventaId} ya tiene una factura asociada`);
+      throw new ConflictException(
+        `La venta ${ventaId} ya tiene una factura asociada`,
+      );
     }
 
     const numeroFactura = await this.generateInvoiceNumber();
@@ -209,7 +268,9 @@ export class InvoicesService {
     });
 
     if (!factura) {
-      throw new NotFoundException(`Factura para venta ${ventaId} no encontrada`);
+      throw new NotFoundException(
+        `Factura para venta ${ventaId} no encontrada`,
+      );
     }
 
     return factura;

@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseUUIDPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import type { CreateClientDto, UpdateClientDto } from './clients.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';

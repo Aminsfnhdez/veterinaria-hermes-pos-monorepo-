@@ -2,7 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ProductsService, CreateProductDto, UpdateProductDto } from './products.service';
+import {
+  ProductsService,
+  CreateProductDto,
+  UpdateProductDto,
+} from './products.service';
 import { Product, CategoriaProducto } from './entities/product';
 
 describe('ProductsService', () => {
@@ -87,7 +91,9 @@ describe('ProductsService', () => {
     it('debería lanzar NotFoundException cuando producto no existe', async () => {
       mockProductRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.findOne('nonexistent-id')).rejects.toThrow(NotFoundException);
+      await expect(service.findOne('nonexistent-id')).rejects.toThrow(
+        NotFoundException,
+      );
       await expect(service.findOne('nonexistent-id')).rejects.toThrow(
         'Producto con ID nonexistent-id no encontrado',
       );
@@ -103,12 +109,16 @@ describe('ProductsService', () => {
         orderBy: jest.fn().mockReturnThis(),
         getMany: jest.fn().mockResolvedValue([lowStockProduct]),
       };
-      mockProductRepository.createQueryBuilder.mockReturnValue(mockQueryBuilder);
+      mockProductRepository.createQueryBuilder.mockReturnValue(
+        mockQueryBuilder,
+      );
 
       const result = await service.findLowStock();
 
       expect(result).toEqual([lowStockProduct]);
-      expect(mockProductRepository.createQueryBuilder).toHaveBeenCalledWith('product');
+      expect(mockProductRepository.createQueryBuilder).toHaveBeenCalledWith(
+        'product',
+      );
     });
   });
 
@@ -122,8 +132,14 @@ describe('ProductsService', () => {
         stockMinimo: 20,
       };
 
-      mockProductRepository.create.mockReturnValue({ ...testProduct, ...createDto });
-      mockProductRepository.save.mockResolvedValue({ ...testProduct, ...createDto });
+      mockProductRepository.create.mockReturnValue({
+        ...testProduct,
+        ...createDto,
+      });
+      mockProductRepository.save.mockResolvedValue({
+        ...testProduct,
+        ...createDto,
+      });
 
       const result = await service.create(createDto);
 
@@ -141,7 +157,10 @@ describe('ProductsService', () => {
       };
 
       mockProductRepository.findOne.mockResolvedValue(testProduct);
-      mockProductRepository.save.mockResolvedValue({ ...testProduct, ...updateDto });
+      mockProductRepository.save.mockResolvedValue({
+        ...testProduct,
+        ...updateDto,
+      });
 
       const result = await service.update('product-123', updateDto);
 
@@ -152,16 +171,19 @@ describe('ProductsService', () => {
     it('debería lanzar NotFoundException cuando producto a actualizar no existe', async () => {
       mockProductRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.update('nonexistent-id', { nombre: 'Test' })).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        service.update('nonexistent-id', { nombre: 'Test' }),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 
   describe('remove()', () => {
     it('debería hacer soft delete (activo=false)', async () => {
       mockProductRepository.findOne.mockResolvedValue(testProduct);
-      mockProductRepository.save.mockResolvedValue({ ...testProduct, activo: false });
+      mockProductRepository.save.mockResolvedValue({
+        ...testProduct,
+        activo: false,
+      });
 
       await service.remove('product-123');
 
@@ -174,7 +196,9 @@ describe('ProductsService', () => {
     it('debería lanzar NotFoundException cuando producto a eliminar no existe', async () => {
       mockProductRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.remove('nonexistent-id')).rejects.toThrow(NotFoundException);
+      await expect(service.remove('nonexistent-id')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -189,7 +213,9 @@ describe('ProductsService', () => {
         andWhere: jest.fn().mockReturnThis(),
         getMany: jest.fn().mockResolvedValue([expiringProduct]),
       };
-      mockProductRepository.createQueryBuilder.mockReturnValue(mockQueryBuilder);
+      mockProductRepository.createQueryBuilder.mockReturnValue(
+        mockQueryBuilder,
+      );
 
       const result = await service.findExpiringSoon(30);
 
@@ -202,7 +228,9 @@ describe('ProductsService', () => {
         andWhere: jest.fn().mockReturnThis(),
         getMany: jest.fn().mockResolvedValue([]),
       };
-      mockProductRepository.createQueryBuilder.mockReturnValue(mockQueryBuilder);
+      mockProductRepository.createQueryBuilder.mockReturnValue(
+        mockQueryBuilder,
+      );
 
       await service.findExpiringSoon();
 
@@ -221,7 +249,9 @@ describe('ProductsService', () => {
         andWhere: jest.fn().mockReturnThis(),
         getMany: jest.fn().mockResolvedValue([expiredProduct]),
       };
-      mockProductRepository.createQueryBuilder.mockReturnValue(mockQueryBuilder);
+      mockProductRepository.createQueryBuilder.mockReturnValue(
+        mockQueryBuilder,
+      );
 
       const result = await service.findExpired();
 

@@ -23,7 +23,11 @@ export class Factura {
   @Column({ name: 'numero_factura', unique: true })
   numeroFactura!: string;
 
-  @Column({ name: 'fecha_emision', type: 'timestamptz', default: () => 'now()' })
+  @Column({
+    name: 'fecha_emision',
+    type: 'timestamptz',
+    default: () => 'now()',
+  })
   fechaEmision!: Date;
 
   @Column({

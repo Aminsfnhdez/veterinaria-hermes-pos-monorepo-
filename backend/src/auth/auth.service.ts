@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -58,7 +62,9 @@ export class AuthService {
 
     const expiresIn = this.configService.get<string>('JWT_EXPIRATION') || '8h';
 
-    const access_token = this.jwtService.sign(payload, { expiresIn: expiresIn as any });
+    const access_token = this.jwtService.sign(payload, {
+      expiresIn: expiresIn as any,
+    });
 
     return {
       access_token,

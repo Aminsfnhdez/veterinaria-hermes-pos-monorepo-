@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Client } from './entities/client';
@@ -46,9 +50,13 @@ export class ClientsService {
   }
 
   async create(createClientDto: CreateClientDto): Promise<Client> {
-    const existing = await this.findByIdentificacion(createClientDto.identificacion);
+    const existing = await this.findByIdentificacion(
+      createClientDto.identificacion,
+    );
     if (existing) {
-      throw new ConflictException(`Cliente con identificación ${createClientDto.identificacion} ya existe`);
+      throw new ConflictException(
+        `Cliente con identificación ${createClientDto.identificacion} ya existe`,
+      );
     }
     const client = this.clientRepository.create(createClientDto);
     return this.clientRepository.save(client);

@@ -13,7 +13,9 @@ export interface JwtPayload {
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(configService: ConfigService) {
-    const jwtSecret = configService.get<string>('JWT_SECRET') || 'default-secret-change-in-production';
+    const jwtSecret =
+      configService.get<string>('JWT_SECRET') ||
+      'default-secret-change-in-production';
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -21,7 +23,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload): Promise<{ userId: string; email: string; rol: string; nombre: string }> {
+  async validate(
+    payload: JwtPayload,
+  ): Promise<{ userId: string; email: string; rol: string; nombre: string }> {
     if (!payload.sub || !payload.email) {
       throw new UnauthorizedException('Token inválido');
     }

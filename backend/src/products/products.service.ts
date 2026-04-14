@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsWhere } from 'typeorm';
 import { Product, CategoriaProducto } from './entities/product';
@@ -62,7 +66,10 @@ export class ProductsService {
     return this.productRepository.save(product);
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto): Promise<Product> {
+  async update(
+    id: string,
+    updateProductDto: UpdateProductDto,
+  ): Promise<Product> {
     const product = await this.findOne(id);
     Object.assign(product, updateProductDto);
     return this.productRepository.save(product);
@@ -77,7 +84,7 @@ export class ProductsService {
   async findExpiringSoon(days: number = 30): Promise<Product[]> {
     const futureDate = new Date();
     futureDate.setDate(futureDate.getDate() + days);
-    
+
     return this.productRepository
       .createQueryBuilder('product')
       .where('product.fechaCaducidad <= :futureDate', { futureDate })
