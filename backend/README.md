@@ -1,98 +1,249 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Hermes POS Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+> Sistema de punto de venta para Veterinaria Hermes - Backend NestJS
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Stack Tecnológico
 
-## Description
+| Tecnología | Versión |
+|------------|---------|
+| NestJS | 11.0.16 |
+| TypeORM | Latest |
+| PostgreSQL | Latest (Clever Cloud) |
+| JWT | @nestjs/jwt |
+| bcrypt | rounds = 12 |
+| PDFKit | Latest |
+| Swagger | @nestjs/swagger |
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
+## Instalación
 
 ```bash
-$ npm install
+# Instalar dependencias
+npm install
+
+# Copiar archivo de variables de entorno
+cp .env.example .env
 ```
 
-## Compile and run the project
+### Variables de Entorno (.env)
+
+```env
+# Base de datos (Clever Cloud)
+DATABASE_URL=postgresql://usuario:password@host:puerto/nombre_bd
+
+# JWT
+JWT_SECRET=tu_secret_aqui
+JWT_EXPIRATION=8h
+
+# Servidor
+PORT=3000
+FRONTEND_URL=http://localhost:4200
+
+# Seguridad
+BCRYPT_ROUNDS=12
+
+# Empresa
+COMPANY_NIT=900000000-0
+```
+
+## Desarrollo
 
 ```bash
-# development
-$ npm run start
+# Servidor de desarrollo (watch mode)
+npm run start:dev
 
-# watch mode
-$ npm run start:dev
+# Compilar TypeScript
+npm run build
 
-# production mode
-$ npm run start:prod
+# Servidor de producción
+npm run start:prod
+
+# URL del servidor
+http://localhost:3000
 ```
 
-## Run tests
+## Tests
 
 ```bash
-# unit tests
-$ npm run test
+# Tests unitarios
+npm test
 
-# e2e tests
-$ npm run test:e2e
+# Coverage
+npm run test:cov
 
-# test coverage
-$ npm run test:cov
+# Tests e2e (requiere configuración de BD adicional)
+npm run test:e2e
 ```
 
-## Deployment
+**51 unit tests** — Cobertura >80% en servicios críticos (Auth, Sales, Products).
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## API Endpoints
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Autenticación
+
+| Método | Endpoint | Descripción | Rol |
+|--------|----------|-------------|-----|
+| POST | /auth/login | Iniciar sesión | Público |
+
+### Productos
+
+| Método | Endpoint | Descripción | Rol |
+|--------|----------|-------------|-----|
+| GET | /products | Listar todos | ADMIN, VENDEDOR |
+| GET | /products/:id | Obtener por ID | ADMIN, VENDEDOR |
+| POST | /products | Crear producto | ADMIN |
+| PATCH | /products/:id | Actualizar | ADMIN |
+| DELETE | /products/:id | Eliminar | ADMIN |
+| GET | /products/low-stock | Stock bajo | ADMIN |
+| GET | /products/expiring-soon | Próximos a vencer | ADMIN |
+| GET | /products/expired | Vencidos | ADMIN |
+
+### Clientes
+
+| Método | Endpoint | Descripción | Rol |
+|--------|----------|-------------|-----|
+| GET | /clients | Listar todos | ADMIN, VENDEDOR |
+| GET | /clients/:id | Obtener por ID | ADMIN, VENDEDOR |
+| POST | /clients | Crear cliente | ADMIN, VENDEDOR |
+| PATCH | /clients/:id | Actualizar | ADMIN, VENDEDOR |
+| DELETE | /clients/:id | Eliminar | ADMIN |
+
+### Ventas
+
+| Método | Endpoint | Descripción | Rol |
+|--------|----------|-------------|-----|
+| GET | /sales | Listar todas | ADMIN, VENDEDOR |
+| GET | /sales/:id | Obtener por ID | ADMIN, VENDEDOR |
+| POST | /sales | Crear venta | ADMIN, VENDEDOR |
+| PATCH | /sales/:id/cancel | Cancelar venta | ADMIN |
+
+### Facturas
+
+| Método | Endpoint | Descripción | Rol |
+|--------|----------|-------------|-----|
+| GET | /invoices | Listar todas | ADMIN, VENDEDOR |
+| GET | /invoices/:id | Obtener por ID | ADMIN, VENDEDOR |
+| POST | /invoices | Crear factura | ADMIN, VENDEDOR |
+| GET | /invoices/:id/pdf | Descargar PDF | ADMIN, VENDEDOR |
+| GET | /invoices/by-venta/:ventaId | Por ID de venta | ADMIN, VENDEDOR |
+
+### Usuarios
+
+| Método | Endpoint | Descripción | Rol |
+|--------|----------|-------------|-----|
+| GET | /users | Listar todos | ADMIN |
+| GET | /users/:id | Obtener por ID | ADMIN |
+| POST | /users | Crear usuario | ADMIN |
+| PATCH | /users/:id | Actualizar | ADMIN |
+| DELETE | /users/:id | Eliminar | ADMIN |
+
+## Swagger
+
+Documentación interactiva disponible en:
+
+```
+http://localhost:3000/api
+```
+
+Incluye:
+- Todos los endpoints documentados
+- Schemas de DTOs
+- Autenticación JWT (Authorize button)
+- Respuestas de ejemplo
+
+## Despliegue Vercel
+
+### 1. Conectar repositorio
+
+1. Ir a [Vercel](https://vercel.com)
+2. Importar repositorio GitHub
+3. Seleccionar carpeta `backend`
+
+### 2. Configurar Variables
+
+En Vercel Dashboard → Settings → Environment Variables:
+
+```env
+DATABASE_URL=postgresql://...
+JWT_SECRET=valor_seguro
+JWT_EXPIRATION=8h
+FRONTEND_URL=https://hermes-pos.vercel.app
+BCRYPT_ROUNDS=12
+COMPANY_NIT=900000000-0
+```
+
+### 3. Despliegue
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel --prod
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### vercel.json
 
-## Resources
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "dist/main.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/main.js"
+    }
+  ]
+}
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+**Nota:** Tiempo máximo de ejecución en Vercel: 10 segundos.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## Base de Datos
 
-## Support
+### Clever Cloud
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+1. Crear addon PostgreSQL en Clever Cloud
+2. Obtener connection string (DATABASE_URL)
+3. Ejecutar schema.sql:
 
-## Stay in touch
+```bash
+psql $DATABASE_URL -f schema.sql
+psql $DATABASE_URL -f seed.sql
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Schema
 
-## License
+- ENUMs: categoriaproducto, estadoventa, rolusuario, metodopago
+- Tablas: producto, cliente, usuario, venta, itemventa, factura
+- Restricciones: stock >= 0 (CHECK), identificacion UNIQUE, email UNIQUE
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Reglas de Negocio
+
+### Stock
+- Nunca permitir stock negativo
+- SELECT FOR UPDATE en transacciones concurrentes
+- CHECK constraint en PostgreSQL
+
+### Productos
+- MEDICAMENTO: lote y fechaCaducidad obligatorios
+- ALIMENTO: fechaCaducidad obligatoria, lote opcional
+- ACCESORIO: sin lote ni fechaCaducidad
+- Bloquear venta si fechaCaducidad < hoy
+
+### IVA
+- 19% en todos los productos
+- Calculado automáticamente en ventas
+
+### Facturación
+- Número de factura vía SEQUENCE PostgreSQL (atómico)
+- CUFE: SHA-256 simulado
+- PDF generado en memoria (buffer)
+
+## Licencia
+
+MIT

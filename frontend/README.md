@@ -1,59 +1,188 @@
-# HermesPosFrontend
+# Hermes POS Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.2.
+> Sistema de punto de venta para Veterinaria Hermes - Frontend Angular
 
-## Development server
+## Stack Tecnológico
 
-To start a local development server, run:
+| Tecnología | Versión |
+|------------|---------|
+| Angular | 21.0.2 |
+| Componentes | Standalone |
+| Estado | Signals |
+| Estilos | Tailwind CSS 4.0 |
+| UI | Flowbite |
+| HTTP | HttpClient |
+
+## Instalación
 
 ```bash
+# Instalar dependencias
+npm install
+
+# Copiar archivo de variables de entorno
+cp .env.example .env
+```
+
+### Variables de Entorno (.env)
+
+```env
+# URL del backend
+VITE_API_URL=http://localhost:3000
+```
+
+## Desarrollo
+
+```bash
+# Servidor de desarrollo
 ng serve
+
+# Abrir navegador automáticamente
+ng serve --open
+
+# URL del servidor
+http://localhost:4200
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Build
 
 ```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
+# Build producción
 ng build
+
+# Build desarrollo
+ng build --configuration development
+
+# Output
+dist/hermes-pos-frontend/browser
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Componentes
 
-## Running unit tests
+### Páginas
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+| Componente | Ruta | Descripción | Acceso |
+|------------|------|-------------|---------|
+| LoginComponent | /login | Login de usuarios | Público |
+| SalePointComponent | /pos | Punto de venta | ADMIN, VENDEDOR |
+| InventoryListComponent | /inventory | Inventario productos | ADMIN |
+| InvoiceListComponent | /invoices | Lista facturas | ADMIN, VENDEDOR |
+| InvoiceViewComponent | /invoices/:id | Ver/descargar PDF | ADMIN, VENDEDOR |
+| AlertsDashboardComponent | /alertas | Alertas inventario | ADMIN |
+
+### Servicios
+
+| Servicio | Descripción |
+|----------|-------------|
+| AuthService | Login, JWT, logout |
+| ProductsService | CRUD productos |
+| ClientsService | CRUD clientes |
+| SalesService | Crear/listar ventas |
+| InvoicesService | Facturas, PDF |
+| AlertsService | Alertas stock |
+
+## Rutas Protegidas
+
+### Por Rol
+
+| Ruta | ADMIN | VENDEDOR |
+|------|-------|-----------|
+| /login | ✓ | ✓ |
+| /pos | ✓ | ✓ |
+| /invoices | ✓ | ✓ |
+| /invoices/:id | ✓ | ✓ |
+| /inventory | ✓ | ✗ |
+| /alertas | ✓ | ✗ |
+
+### Flujo de Redirección
+
+- ADMIN → /inventory
+- VENDEDOR → /pos
+- No autenticado → /login
+
+## Despliegue Vercel
+
+### 1. Conectar repositorio
+
+1. Ir a [Vercel](https://vercel.com)
+2. Importar repositorio GitHub
+3. Seleccionar carpeta `frontend`
+
+### 2. Configurar Variables
+
+En Vercel Dashboard → Settings → Environment Variables:
+
+```env
+VITE_API_URL=https://hermes-pos-backend.vercel.app
+```
+
+### 3. Despliegue
 
 ```bash
-ng test
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel --prod
 ```
 
-## Running end-to-end tests
+### vercel.json
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+```json
+{
+  "framework": "angular",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/hermes-pos-frontend/browser"
+}
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Funcionalidades
 
-## Additional Resources
+### Punto de Venta (/pos)
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Búsqueda de productos por nombre
+- Carrito dinámico (agregar/eliminar items)
+- Cálculo automático de subtotal, IVA 19%, total
+- Selección de cliente
+- Checkout → crea venta + redirect a factura
+
+### Inventario (/inventory)
+
+- Lista de productos con filtros
+- CRUD completo (ADMIN)
+- Indicadores visuales:
+  - 🟢 Stock OK
+  - 🟡 Bajo stock
+  - 🔴 Vencido
+
+### Alertas (/alertas)
+
+- Productos con stock bajo (stock <= stockMinimo)
+- Productos próximos a vencer (30 días)
+- Productos vencidos
+- Acciones rápidas: editar stock
+
+### Facturas (/invoices)
+
+- Lista de facturas
+- Ver detalle
+- Descargar PDF
+- Enlace directo desde venta completada
+
+## UI/UX
+
+### Diseño
+
+- **Tailwind CSS 4.0**: CSS-first config
+- **Flowbite**: Componentes preconstruidos
+- **Responsive**: Mobile-first
+- **Modo oscuro**: No implementado en v1
+
+### Colores
+
+- Primario: Emerald (veterinario)
+- Fondo: Blanco/Gris claro
+- Texto: Gris oscuro
+
+## Licencia
+
+MIT
