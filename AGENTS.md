@@ -210,7 +210,7 @@ NUNCA permitir stock negativo.
 5. **Etapa 5** - Autenticación y Autorización (JWT, RBAC)
 6. **Etapa 6** - Generación de Facturas (PDF en memoria)
 7. **Etapa 7** - Frontend Angular + Tailwind + Flowbite
-8. **Etapa 8** - Pruebas (Jest,覆盖率 > 70%)
+8. **Etapa 8** - Pruebas (Jest, Cobertura > 70%)
 9. **Etapa 9** - Documentación y Despliegue
 10. **Etapa 10** - Consolidación final
 
