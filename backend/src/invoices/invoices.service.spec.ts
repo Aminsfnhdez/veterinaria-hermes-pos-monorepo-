@@ -317,4 +317,66 @@ describe('InvoicesService', () => {
       );
     });
   });
+
+  describe('generate() casos adicionales', () => {
+    const createInvoiceDto: CreateInvoiceDto = {
+      ventaId: 'venta-123',
+      metodoPago: MetodoPago.EFECTIVO,
+    };
+
+    it('debería crear factura con cliente que tiene email y teléfono', async () => {
+      const ventaConDatos = {
+        ...testVenta,
+        cliente: { ...testClient, email: 'cliente@test.com', telefono: '3001234567' },
+      };
+      mockVentaRepository.findOne.mockResolvedValue(ventaConDatos);
+      mockFacturaRepository.findOne.mockResolvedValue(null);
+      mockQueryRunner.query.mockResolvedValue([{ next_val: 2 }]);
+      mockFacturaRepository.create.mockReturnValue({ ...testFactura, numeroFactura: 'FE-2026-000002' });
+      mockFacturaRepository.save.mockResolvedValue({ ...testFactura, numeroFactura: 'FE-2026-000002' });
+
+      const result = await service.generate(createInvoiceDto);
+
+      expect(result).toBeDefined();
+      expect(mockFacturaRepository.create).toHaveBeenCalled();
+    });
+
+    it('debería crear factura con múltiples items en venta', async () => {
+      const ventaMultiItems = {
+        ...testVenta,
+        itemVentas: [
+          {
+            id: 'item-1',
+            cantidad: 2,
+            precioUnitario: 50,
+            subtotal: 100,
+            ivaItem: 19,
+            productoId: 'product-1',
+            ventaId: 'venta-123',
+            producto: { ...testProduct, nombre: 'Producto 1' },
+          },
+          {
+            id: 'item-2',
+            cantidad: 1,
+            precioUnitario: 100,
+            subtotal: 100,
+            ivaItem: 19,
+            productoId: 'product-2',
+            ventaId: 'venta-123',
+            producto: { ...testProduct, id: 'product-2', nombre: 'Producto 2' },
+          },
+        ],
+      };
+      mockVentaRepository.findOne.mockResolvedValue(ventaMultiItems);
+      mockFacturaRepository.findOne.mockResolvedValue(null);
+      mockQueryRunner.query.mockResolvedValue([{ next_val: 3 }]);
+      mockFacturaRepository.create.mockReturnValue({ ...testFactura, numeroFactura: 'FE-2026-000003' });
+      mockFacturaRepository.save.mockResolvedValue({ ...testFactura, numeroFactura: 'FE-2026-000003' });
+
+      const result = await service.generate(createInvoiceDto);
+
+      expect(result).toBeDefined();
+      expect(mockFacturaRepository.create).toHaveBeenCalled();
+    });
+  });
 });
