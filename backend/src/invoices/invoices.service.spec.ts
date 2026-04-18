@@ -1,8 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, ConflictException } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
-import { createHash } from 'crypto';
+import { DataSource } from 'typeorm';
 import { InvoicesService, CreateInvoiceDto } from './invoices.service';
 import { Factura, MetodoPago } from './entities/factura';
 import { Venta, EstadoVenta } from '../sales/entities/venta';
@@ -16,12 +15,12 @@ jest.mock('pdfkit', () => {
     text: jest.fn().mockReturnThis(),
     moveDown: jest.fn().mockReturnThis(),
     fillColor: jest.fn().mockReturnThis(),
-    on: jest.fn((event, callback) => {
+    on: jest.fn((event: string, callback: (chunk: Buffer) => void) => {
       if (event === 'data') {
         callback(Buffer.from('mock pdf data'));
       }
       if (event === 'end') {
-        callback();
+        callback(Buffer.alloc(0));
       }
     }),
     end: jest.fn(),

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsEnum, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsEnum, IsUUID } from 'class-validator';
 import { MetodoPago } from '../entities/factura';
 
 export class CreateInvoiceDto {
