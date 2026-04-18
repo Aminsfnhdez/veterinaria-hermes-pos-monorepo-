@@ -3,6 +3,13 @@ import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { Observable } from 'rxjs';
 
+interface AuthUser {
+  userId: string;
+  email: string;
+  rol: string;
+  nombre: string;
+}
+
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
@@ -20,7 +27,7 @@ export class RolesGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const user = request.user;
+    const user = request.user as AuthUser | undefined;
 
     if (!user) {
       return false;
