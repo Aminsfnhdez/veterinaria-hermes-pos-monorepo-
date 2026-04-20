@@ -16,20 +16,22 @@
 | 7 | ✅ Completada (Frontend Angular + Tailwind + Flowbite) |
 | 8 | ✅ Completada (Tests Jest: 51 unit tests, >80% cobertura servicios críticos) |
 | 9 | ✅ Completada (Swagger /api/docs, READMEs, Deploy Vercel + Clever Cloud) |
-| 10 | ⏳ Pendiente (Consolidación final) |
+| 10 | ✅ Completada (Consolidación final, refactor PDF, lint fixes) |
 
-### Cobertura de Tests (Etapa 8)
+### Cobertura de Tests (Etapa 10)
 
 | Servicio | Tests | Statements | Branches |
 |----------|-------|------------|----------|
 | AuthService | 8 | 100% | 80% |
 | SalesService | 21 | 100% | 88.88% |
 | ProductsService | 14 | 100% | 85.71% |
-| InvoicesService | 14 | 44.82% | 65.62% |
+| InvoicesService | 53 total | 45.29% | 65.62% |
+
+**Nota:** InvoicesService tiene 45.29% statements por limitación conocida del mock de PDFKit en Jest. El refactor arquitectónico (PdfKitGeneratorService injectable) está implementado y funcional. Decisión tomada: no continuar iterando mocks de PDFKit en esta etapa. Documentado en CHANGELOG.md.
 
 **Nota e2e:** Los tests e2e requieren configuración de BD adicional debido al límite de conexiones de Clever Cloud. Documentado, no crítico para v1.
 
-**Commits Etapas 7-9:** 28 commits (21 en Etapa 7 + 5 en Etapa 8 + 2 en Etapa 9)
+**Commits Etapas 7-10:** 33+ commits (21 en Etapa 7 + 5 en Etapa 8 + 2 en Etapa 9 + 4 en Etapa 10 + 1 chore gitignore)
 
 ---
 
@@ -134,6 +136,7 @@ veterinaria-hermes-pos/
 │   │   ├── users/             # Gestión usuarios
 │   │   ├── sales/             # Transacciones de venta
 │   │   ├── invoices/          # Facturación, PDF
+│   │   │   ├── pdf-kit-generator.service.ts  # Servicio inyectable para PDF
 │   │   ├── common/            # Decorators, Guards, Filters, Interceptors
 │   │   ├── app.module.ts
 │   │   └── main.ts
@@ -148,8 +151,9 @@ veterinaria-hermes-pos/
 │   │   ├── invoices/          # Facturas
 │   │   └── shared/            # Servicios compartidos
 │   └── vercel.json
-├── agent.md                    # Contexto completo (mantener)
-└── AGENTS.md                   # Este archivo
+├── agent.md                    # Contexto completo
+├── AGENTS.md                   # Este archivo
+└── CHANGELOG.md                # Historial de versiones
 ```
 
 ---
