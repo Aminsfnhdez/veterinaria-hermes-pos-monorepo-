@@ -8,8 +8,7 @@ import { Repository, DataSource } from 'typeorm';
 import { Factura, MetodoPago } from './entities/factura';
 import { Venta } from '../sales/entities/venta';
 import { createHash } from 'crypto';
-
-const PDFDocument = require('pdfkit');
+import { PdfKitGeneratorService } from './pdf-kit-generator.service';
 
 export interface CreateInvoiceDto {
   ventaId: string;
@@ -30,6 +29,7 @@ export class InvoicesService {
     @InjectRepository(Venta)
     private readonly ventaRepository: Repository<Venta>,
     private readonly dataSource: DataSource,
+    private readonly pdfGenerator: PdfKitGeneratorService,
   ) {}
 
   private generateCufe(
@@ -79,7 +79,7 @@ export class InvoicesService {
     const { numeroFactura, cufe } = factura;
 
     // Crear documento PDF
-    const doc = new PDFDocument({ size: 'A4', margin: 50 });
+    const doc = this.pdfGenerator.createDocument({ size: 'A4', margin: 50 });
     const buffers: Buffer[] = [];
     doc.on('data', (chunk: Buffer) => buffers.push(chunk));
 
