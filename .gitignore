@@ -38,6 +38,7 @@ Thumbs.db
 # Backend
 backend/dist/
 backend/node_modules/
+backend/.env
 
 # Frontend (Angular)
 frontend/node_modules/
@@ -55,5 +56,5 @@ frontend/.angular/
 .vscode/settings.json
 .idea/
 
-# Backend
-backend/.env
+# OpenCode
+.opencode/*
