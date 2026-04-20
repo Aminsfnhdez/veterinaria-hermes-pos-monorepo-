@@ -3,6 +3,7 @@ import { NotFoundException, ConflictException } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { InvoicesService, CreateInvoiceDto } from './invoices.service';
+import { PdfKitGeneratorService } from './pdf-kit-generator.service';
 import { Factura, MetodoPago } from './entities/factura';
 import { Venta, EstadoVenta } from '../sales/entities/venta';
 import { Product, CategoriaProducto } from '../products/entities/product';
@@ -43,6 +44,24 @@ describe('InvoicesService', () => {
 
   const mockDataSource = {
     createQueryRunner: jest.fn(),
+  };
+
+  const mockPdfKitGenerator = {
+    createDocument: jest.fn().mockImplementation(() => ({
+      fontSize: jest.fn().mockReturnThis(),
+      text: jest.fn().mockReturnThis(),
+      moveDown: jest.fn().mockReturnThis(),
+      fillColor: jest.fn().mockReturnThis(),
+      on: jest.fn((event: string, callback: (chunk: Buffer) => void) => {
+        if (event === 'data') {
+          callback(Buffer.from('mock pdf data'));
+        }
+        if (event === 'end') {
+          callback(Buffer.alloc(0));
+        }
+      }),
+      end: jest.fn(),
+    })),
   };
 
   const testClient: Client = {
@@ -135,6 +154,7 @@ describe('InvoicesService', () => {
         },
         { provide: getRepositoryToken(Venta), useValue: mockVentaRepository },
         { provide: DataSource, useValue: mockDataSource },
+        { provide: PdfKitGeneratorService, useValue: mockPdfKitGenerator },
       ],
     }).compile();
 
