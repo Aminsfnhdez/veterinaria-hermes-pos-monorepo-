@@ -61,6 +61,81 @@ npm run start:prod
 http://localhost:3000
 ```
 
+### Verificación de Estado
+
+#### Endpoint Raíz (/)
+Información general del servicio:
+
+```bash
+curl http://localhost:3000/
+```
+
+Respuesta esperada:
+```json
+{
+  "status": "ok",
+  "service": "Veterinaria Hermes POS API",
+  "version": "1.0.0",
+  "timestamp": "2026-04-21T...",
+  "environment": "development",
+  "endpoints": {
+    "documentation": "/api",
+    "health": "/health",
+    "health_db": "/health/db",
+    "auth": "/auth",
+    "products": "/products",
+    "sales": "/sales",
+    "invoices": "/invoices",
+    "clients": "/clients",
+    "users": "/users"
+  }
+}
+```
+
+#### Health Check General (/health)
+Verifica que el backend está activo:
+
+```bash
+curl http://localhost:3000/health
+```
+
+Respuesta esperada:
+```json
+{
+  "status": "ok",
+  "timestamp": "2026-04-21T...",
+  "uptime": "0h 1m 30s",
+  "memory": { "used": "85 MB", "total": "512 MB" }
+}
+```
+
+#### Health Check de Base de Datos (/health/db)
+Verifica conectividad a PostgreSQL:
+
+```bash
+curl http://localhost:3000/health/db
+```
+
+Respuesta esperada:
+```json
+{
+  "status": "ok",
+  "database": "postgresql",
+  "response_time_ms": 12,
+  "timestamp": "2026-04-21T..."
+}
+```
+
+Error (503) si no hay conexión:
+```json
+{
+  "status": "error",
+  "database": "postgresql",
+  "message": "Unable to connect to database",
+  "timestamp": "2026-04-21T..."
+}
+```
+
 ## Tests
 
 ```bash
@@ -149,6 +224,65 @@ Incluye:
 - Schemas de DTOs
 - Autenticación JWT (Authorize button)
 - Respuestas de ejemplo
+
+### Autenticación en Swagger
+
+Para probar endpoints protegidos:
+
+1. Ejecutar `POST /auth/login` con credenciales válidas
+2. Copiar el token recibido
+3. Click en botón **Authorize** (top de la página)
+4. Pegar el token en el campo `JWT-auth`
+5. Todos los endpoints protegidos aceptarán el token automáticamente
+
+Ejemplo de login:
+```json
+{
+  "email": "admin@hermes.com",
+  "password": "admin123"
+}
+```
+
+## Autenticación de Endpoints Protegidos
+
+### Obtener Token JWT
+
+```bash
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@hermes.com","password":"admin123"}'
+```
+
+Respuesta:
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1...",
+  "user": {
+    "id": "...",
+    "email": "admin@hermes.com",
+    "nombre": "Admin",
+    "rol": "ADMIN"
+  }
+}
+```
+
+### Usar Token en Requests
+
+```bash
+# Con header Authorization
+curl -X GET http://localhost:3000/products \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1..."
+
+# En Swagger UI
+# Click Authorize → pegar token en campo JWT-auth
+```
+
+### Roles y Permisos
+
+| Rol | Endpoints Permitted |
+|-----|-------------------|
+| ADMIN | Todos (products CRUD, sales cancel, users CRUD, clients delete) |
+| VENDEDOR | products read, sales create, invoices create, clients CRUD |
 
 ## Despliegue Vercel
 

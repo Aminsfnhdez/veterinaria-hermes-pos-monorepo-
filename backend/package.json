@@ -1,7 +1,7 @@
 {
   "name": "hermes-pos-backend",
   "version": "0.0.1",
-  "description": "",
+  "description": "Veterinaria Hermes POS - Backend NestJS",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
