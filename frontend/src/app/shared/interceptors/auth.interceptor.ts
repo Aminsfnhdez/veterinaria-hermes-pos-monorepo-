@@ -9,7 +9,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const token = authService.getToken();
 
-  if (token && req.url.includes('localhost:3000') || req.url.includes('vercel.app')) {
+  if (token && (req.url.includes('localhost:3000') || req.url.includes('vercel.app'))) {
     const authReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
