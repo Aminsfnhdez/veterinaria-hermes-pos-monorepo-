@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@source "../../node_modules/flowbite/dist/flowbite.min.css";
-
 @theme {
   --color-primary: #2563eb;
   --color-primary-dark: #1d4ed8;
