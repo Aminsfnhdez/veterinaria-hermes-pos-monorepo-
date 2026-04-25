@@ -20,9 +20,12 @@ async function main() {
   
   // Forzar SSL sin verificación de certificado
   console.log('\n1. Test connection with SELECT 1...');
-  const pool = new pg.Pool({ 
-    connectionString: databaseUrl + '?sslmode=require',
-  });
+  const pool = new pg.Pool({
+    connectionString: databaseUrl,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
   
   try {
     const result = await pool.query('SELECT 1 AS test');
