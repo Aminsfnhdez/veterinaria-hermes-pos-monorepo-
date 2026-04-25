@@ -9,65 +9,100 @@ import { Client, CreateClientDto } from '../../../shared/models/client.model';
   imports: [FormsModule],
   template: `
     <div class="space-y-4">
-      <div class="flex gap-2">
-        <input
-          type="text"
-          [(ngModel)]="searchTerm"
-          (input)="onSearch()"
-          (focus)="showDropdown = true"
-          placeholder="Buscar cliente por nombre o identificación..."
-          class="input-field flex-1"
-        />
+      <div class="flex gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <label for="client-search" class="sr-only">Buscar cliente</label>
+          <input
+            id="client-search"
+            type="text"
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+            (focus)="showDropdown = true"
+            placeholder="Buscar cliente por nombre o identificación..."
+            class="input-field w-full"
+            aria-describedby="client-search-hint"
+          />
+          <span id="client-search-hint" class="sr-only">Escriba para buscar clientes</span>
+        </div>
         <button 
+          type="button"
           (click)="showNewClientForm = !showNewClientForm"
           class="btn-secondary"
+          [attr.aria-expanded]="showNewClientForm"
+          aria-controls="new-client-form"
         >
-          + Nuevo
+          {{ showNewClientForm ? 'Cancelar' : '+ Nuevo' }}
         </button>
       </div>
 
       @if (showNewClientForm) {
-        <div class="bg-slate-50 p-4 rounded-lg space-y-3">
+        <div id="new-client-form" class="bg-slate-50 p-4 rounded-lg space-y-3">
           <h4 class="font-medium text-slate-800">Nuevo Cliente</h4>
-          <div class="grid grid-cols-2 gap-3">
-            <input [(ngModel)]="newClient.nombre" placeholder="Nombre" class="input-field" />
-            <input [(ngModel)]="newClient.identificacion" placeholder="Identificación" class="input-field" />
-            <input [(ngModel)]="newClient.telefono" placeholder="Teléfono" class="input-field" />
-            <input [(ngModel)]="newClient.email" placeholder="Email" class="input-field" />
-            <input [(ngModel)]="newClient.nombreMascota" placeholder="Nombre mascota" class="input-field" />
-            <input [(ngModel)]="newClient.tipoMascota" placeholder="Tipo mascota" class="input-field" />
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="new-client-nombre" class="input-label">Nombre *</label>
+              <input id="new-client-nombre" [(ngModel)]="newClient.nombre" placeholder="Nombre completo" class="input-field" />
+            </div>
+            <div>
+              <label for="new-client-identificacion" class="input-label">Identificación *</label>
+              <input id="new-client-identificacion" [(ngModel)]="newClient.identificacion" placeholder="Cédula" class="input-field" />
+            </div>
+            <div>
+              <label for="new-client-telefono" class="input-label">Teléfono</label>
+              <input id="new-client-telefono" [(ngModel)]="newClient.telefono" placeholder="Teléfono" class="input-field" />
+            </div>
+            <div>
+              <label for="new-client-email" class="input-label">Email</label>
+              <input id="new-client-email" [(ngModel)]="newClient.email" type="email" placeholder="Email" class="input-field" />
+            </div>
+            <div>
+              <label for="new-client-mascota" class="input-label">Nombre mascota</label>
+              <input id="new-client-mascota" [(ngModel)]="newClient.nombreMascota" placeholder="Nombre mascota" class="input-field" />
+            </div>
+            <div>
+              <label for="new-client-tipo" class="input-label">Tipo mascota</label>
+              <input id="new-client-tipo" [(ngModel)]="newClient.tipoMascota" placeholder="Perro, Gato..." class="input-field" />
+            </div>
           </div>
-          <button (click)="createClient()" class="btn-primary">
+          <button type="button" (click)="createClient()" class="btn-primary">
             Guardar Cliente
           </button>
         </div>
       }
 
       @if (showDropdown && filteredClients().length > 0) {
-        <div class="bg-white border border-slate-200 rounded-lg shadow-lg max-h-48 overflow-auto">
+        <ul class="bg-white border border-slate-200 rounded-lg shadow-lg max-h-48 overflow-auto" role="listbox" aria-label="Resultados de clientes">
           @for (client of filteredClients(); track client.id) {
-            <button
-              type="button"
-              (click)="selectClient(client)"
-              class="w-full text-left px-4 py-2 hover:bg-slate-50"
-            >
-              <span class="font-medium">{{ client.nombre }}</span>
-              <span class="text-sm text-slate-500 ml-2">{{ client.identificacion }}</span>
-              @if (client.nombreMascota) {
-                <span class="text-sm text-slate-400 ml-2">| {{ client.nombreMascota }}</span>
-              }
-            </button>
+            <li>
+              <button
+                type="button"
+                (click)="selectClient(client)"
+                class="w-full text-left px-4 py-3 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none transition-colors duration-150"
+                role="option"
+              >
+                <span class="font-medium text-slate-800">{{ client.nombre }}</span>
+                <span class="text-sm text-slate-500 ml-2">{{ client.identificacion }}</span>
+                @if (client.nombreMascota) {
+                  <span class="text-sm text-slate-400 ml-2">| {{ client.nombreMascota }}</span>
+                }
+              </button>
+            </li>
           }
-        </div>
+        </ul>
       }
 
       @if (selectedClient()) {
-        <div class="bg-primary/10 p-3 rounded-lg flex justify-between items-center">
+        <div class="bg-blue-50 p-3 rounded-lg flex justify-between items-center" role="status" aria-live="polite">
           <div>
-            <span class="font-medium">{{ selectedClient()?.nombre }}</span>
+            <span class="font-medium text-slate-800">{{ selectedClient()?.nombre }}</span>
             <span class="text-sm text-slate-600 ml-2">{{ selectedClient()?.identificacion }}</span>
           </div>
-          <button (click)="clearClient()" class="text-slate-500 hover:text-slate-700">
+          <button 
+            type="button" 
+            (click)="clearClient()" 
+            class="w-8 h-8 rounded-full hover:bg-blue-100 flex items-center justify-center text-slate-500 transition-colors duration-200"
+            aria-label="Quitar cliente seleccionado"
+          >
             ✕
           </button>
         </div>

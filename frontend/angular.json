@@ -25,7 +25,6 @@
               }
             ],
             "styles": [
-              "node_modules/flowbite/dist/flowbite.min.css",
               "src/styles.css"
             ]
           },

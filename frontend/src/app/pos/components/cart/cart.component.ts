@@ -10,38 +10,45 @@ export interface CartItem {
   selector: 'app-cart',
   standalone: true,
   template: `
-    <div class="bg-white rounded-lg shadow p-4">
+    <div class="card">
       <h3 class="font-semibold text-slate-800 mb-4">Carrito de Compras</h3>
       
       @if (items().length === 0) {
-        <p class="text-slate-500 text-center py-4">El carrito está vacío</p>
+        <p class="text-slate-500 text-center py-8">El carrito está vacío</p>
       } @else {
         <div class="space-y-3 mb-4">
           @for (item of items(); track item.product.id) {
-            <div class="flex justify-between items-center border-b border-slate-100 pb-2">
-              <div class="flex-1">
-                <p class="font-medium text-slate-800">{{ item.product.nombre }}</p>
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+              <div class="flex-1 min-w-0">
+                <p class="font-medium text-slate-800 truncate">{{ item.product.nombre }}</p>
                 <p class="text-sm text-slate-500">
                   \${{ item.product.precio }} x {{ item.cantidad }}
                 </p>
               </div>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-shrink-0">
                 <button 
+                  type="button"
                   (click)="decrementQuantity(item)"
-                  class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center"
+                  [disabled]="item.cantidad <= 1"
+                  class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors duration-200"
+                  [attr.aria-label]="'Disminuir cantidad de ' + item.product.nombre"
                 >
-                  -
+                  −
                 </button>
-                <span class="w-8 text-center">{{ item.cantidad }}</span>
+                <span class="w-8 text-center font-medium" aria-live="polite">{{ item.cantidad }}</span>
                 <button 
+                  type="button"
                   (click)="incrementQuantity(item)"
-                  class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center"
+                  class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors duration-200"
+                  [attr.aria-label]="'Aumentar cantidad de ' + item.product.nombre"
                 >
                   +
                 </button>
                 <button 
+                  type="button"
                   (click)="removeItem(item)"
-                  class="text-red-500 hover:text-red-700 ml-2"
+                  class="w-9 h-9 rounded-full bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center transition-colors duration-200 ml-1"
+                  [attr.aria-label]="'Eliminar ' + item.product.nombre + ' del carrito'"
                 >
                   ✕
                 </button>

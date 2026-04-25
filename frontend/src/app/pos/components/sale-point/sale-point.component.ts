@@ -30,21 +30,27 @@ import { MetodoPago } from '../../../shared/models/invoice.model';
         @if (cartItems().length > 0 && selectedClient()) {
           <div class="card">
             <h3 class="font-semibold text-slate-800 mb-4">Método de Pago</h3>
-            <div class="flex gap-3">
+            <div class="flex gap-3 flex-wrap">
               <button 
+                type="button"
                 (click)="metodoPago = 'EFECTIVO'"
+                [attr.aria-pressed]="metodoPago === 'EFECTIVO'"
                 [class]="metodoPago === 'EFECTIVO' ? 'btn-primary' : 'btn-secondary'"
               >
                 Efectivo
               </button>
               <button 
+                type="button"
                 (click)="metodoPago = 'TARJETA'"
+                [attr.aria-pressed]="metodoPago === 'TARJETA'"
                 [class]="metodoPago === 'TARJETA' ? 'btn-primary' : 'btn-secondary'"
               >
                 Tarjeta
               </button>
               <button 
+                type="button"
                 (click)="metodoPago = 'TRANSFERENCIA'"
+                [attr.aria-pressed]="metodoPago === 'TRANSFERENCIA'"
                 [class]="metodoPago === 'TRANSFERENCIA' ? 'btn-primary' : 'btn-secondary'"
               >
                 Transferencia
@@ -63,12 +69,15 @@ import { MetodoPago } from '../../../shared/models/invoice.model';
 
         @if (cartItems().length > 0 && selectedClient()) {
           <button 
+            type="button"
             (click)="finalizeSale()"
             [disabled]="processing()"
             class="btn-primary w-full mt-4 py-3 text-lg"
+            [attr.aria-busy]="processing()"
           >
             @if (processing()) {
-              <span class="animate-spin mr-2">⟳</span>
+              <span class="animate-spin mr-2" aria-hidden="true">⟳</span>
+              <span class="sr-only">Procesando...</span>
               Procesando...
             } @else {
               Finalizar Venta
@@ -77,10 +86,11 @@ import { MetodoPago } from '../../../shared/models/invoice.model';
         }
 
         @if (saleResult()) {
-          <div class="mt-4 p-4 bg-green-100 border border-green-400 rounded-lg">
+          <div class="mt-4 p-4 rounded-lg bg-green-50 border border-green-200">
             <p class="font-medium text-green-800">¡Venta realizada!</p>
             <p class="text-sm text-green-600">ID: {{ saleResult()?.id }}</p>
             <button 
+              type="button"
               (click)="generateInvoice()"
               class="mt-2 btn-primary text-sm"
             >
@@ -90,10 +100,11 @@ import { MetodoPago } from '../../../shared/models/invoice.model';
         }
 
         @if (invoiceResult()) {
-          <div class="mt-2 p-4 bg-primary/10 border border-primary/30 rounded-lg">
-            <p class="font-medium text-primary">Factura generada</p>
+          <div class="mt-2 p-4 rounded-lg bg-blue-50 border border-blue-200">
+            <p class="font-medium text-blue-800">Factura generada</p>
             <p class="text-sm text-slate-600">{{ invoiceResult()?.numeroFactura }}</p>
             <button 
+              type="button"
               (click)="downloadInvoicePdf()"
               class="mt-2 btn-secondary text-sm"
             >
@@ -103,8 +114,8 @@ import { MetodoPago } from '../../../shared/models/invoice.model';
         }
 
         @if (error()) {
-          <div class="mt-4 p-4 bg-red-100 border border-red-400 rounded-lg">
-            <p class="text-red-700">{{ error() }}</p>
+          <div class="mt-4 p-4 rounded-lg bg-red-50 border border-red-200" role="alert">
+            <p class="text-red-700" aria-live="polite">{{ error() }}</p>
           </div>
         }
       </div>
