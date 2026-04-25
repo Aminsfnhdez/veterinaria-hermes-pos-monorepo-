@@ -10,7 +10,16 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Veterinaria Hermes POS API')
     .setDescription(
-      'API del sistema de punto de venta para Veterinaria Hermes. Incluye autenticación JWT, gestión de productos, ventas, clientes, facturas y control de inventario.',
+      'API del sistema de punto de venta para Veterinaria Hermes. Incluye autenticación JWT, gestión de productos, ventas, clientes, facturas y control de inventario.\n\n' +
+      '## Autenticación\n' +
+      '1. Ejecutar POST /auth/login con credenciales\n' +
+      '2. Copiar el token JWT de la respuesta\n' +
+      '3. Hacer clic en "Authorize" y pegar el token\n' +
+      '4. Todos los endpoints protegidos aceptarán el token automáticamente\n\n' +
+      '## Health Checks\n' +
+      '- GET / - Información general del servicio\n' +
+      '- GET /health - Estado del backend (uptime, memoria)\n' +
+      '- GET /health/db - Verificación de conexión a PostgreSQL',
     )
     .setVersion('1.0')
     .addBearerAuth(
@@ -24,6 +33,7 @@ async function bootstrap() {
       },
       'JWT-auth',
     )
+    .addTag('health', 'Health checks del sistema')
     .addTag('auth', 'Autenticación y login')
     .addTag('products', 'Gestión de productos (inventario)')
     .addTag('clients', 'Gestión de clientes')
