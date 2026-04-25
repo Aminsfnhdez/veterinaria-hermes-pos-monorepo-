@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
-import { AuthService } from './shared/services/auth.service';
 import { NavbarComponent } from './shared/ui/navbar/navbar.component';
 import { SidebarComponent } from './shared/ui/sidebar/sidebar.component';
 
@@ -26,9 +25,8 @@ import { SidebarComponent } from './shared/ui/sidebar/sidebar.component';
   `
 })
 export class App {
-  private authService = inject(AuthService);
   private router = inject(Router);
-  
+
   isLoginPage = () => {
     return this.router.url === '/login';
   };
