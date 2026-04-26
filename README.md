@@ -302,7 +302,7 @@ chore(frontend): configurar Tailwind CSS 4
 | 7 | ✅ | Frontend Angular + Tailwind |
 | 8 | ✅ | Tests Jest (51 unit, >80% cobertura) |
 | 9 | ✅ | Documentación y Despliegue |
-| 10 | ⏳ | Consolidación final |
+| 10 | ✅ | Consolidación final |
 
 ---
 
@@ -321,4 +321,4 @@ chore(frontend): configurar Tailwind CSS 4
 
 ---
 
-**Estado actual:** Etapa 9 completada. Swagger en `/api`, READMEs completos. Listo para **Etapa 10 - Consolidación final**.
+**Estado actual:** Etapa 10 completada. Swagger en `/api/docs`, README consolidado y frontend con layout final (incluye footer con créditos dinámicos).
