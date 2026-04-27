@@ -8,61 +8,88 @@ import { Product } from '../../../shared/models/product.model';
   standalone: true,
   imports: [DatePipe],
   template: `
-    <div class="p-6">
-      <h1 class="text-2xl font-bold text-slate-800 mb-6">Panel de Alertas</h1>
+    <div class="p-4 sm:p-6">
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold text-slate-900">Panel de alertas</h1>
+        <p class="text-sm text-slate-500 mt-1">Productos con stock bajo, próximos a vencer o vencidos</p>
+      </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="card border-l-4 border-orange-500">
-          <div class="flex items-center justify-between">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="stat-card">
+          <div class="flex items-start justify-between">
             <div>
-              <p class="text-sm text-slate-500">Stock Bajo</p>
-              <p class="text-3xl font-bold text-orange-600">{{ lowStockProducts().length }}</p>
+              <p class="stat-label">Stock bajo</p>
+              <p class="stat-value mt-2 text-amber-600">{{ lowStockProducts().length }}</p>
+              <p class="text-xs text-slate-500 mt-1">Productos por reabastecer</p>
             </div>
-            <span class="text-4xl">📦</span>
+            <span class="stat-icon bg-amber-100 text-amber-600">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+            </span>
           </div>
         </div>
 
-        <div class="card border-l-4 border-yellow-500">
-          <div class="flex items-center justify-between">
+        <div class="stat-card">
+          <div class="flex items-start justify-between">
             <div>
-              <p class="text-sm text-slate-500">Por Vencer (30 días)</p>
-              <p class="text-3xl font-bold text-yellow-600">{{ expiringSoonProducts().length }}</p>
+              <p class="stat-label">Por vencer (30 días)</p>
+              <p class="stat-value mt-2 text-yellow-600">{{ expiringSoonProducts().length }}</p>
+              <p class="text-xs text-slate-500 mt-1">Próximos a caducar</p>
             </div>
-            <span class="text-4xl">⏰</span>
+            <span class="stat-icon bg-yellow-100 text-yellow-600">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </span>
           </div>
         </div>
 
-        <div class="card border-l-4 border-red-500">
-          <div class="flex items-center justify-between">
+        <div class="stat-card">
+          <div class="flex items-start justify-between">
             <div>
-              <p class="text-sm text-slate-500">Vencidos</p>
-              <p class="text-3xl font-bold text-red-600">{{ expiredProducts().length }}</p>
+              <p class="stat-label">Vencidos</p>
+              <p class="stat-value mt-2 text-red-600">{{ expiredProducts().length }}</p>
+              <p class="text-xs text-slate-500 mt-1">No pueden venderse</p>
             </div>
-            <span class="text-4xl">❌</span>
+            <span class="stat-icon bg-red-100 text-red-600">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </span>
           </div>
         </div>
       </div>
 
       @if (lowStockProducts().length > 0) {
-        <div class="card mb-6">
-          <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-            <span>📦</span> Productos con Stock Bajo
-          </h2>
+        <div class="card mb-6 p-0 overflow-hidden">
+          <header class="flex items-center gap-2 px-6 py-4 border-b border-slate-100">
+            <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-100 text-amber-600">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+            </span>
+            <h2 class="text-base font-semibold text-slate-800">Productos con stock bajo</h2>
+          </header>
           <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-slate-50">
+            <table class="table">
+              <thead>
                 <tr>
-                  <th class="px-4 py-2 text-left text-sm font-medium text-slate-600">Producto</th>
-                  <th class="px-4 py-2 text-left text-sm font-medium text-slate-600">Stock</th>
-                  <th class="px-4 py-2 text-left text-sm font-medium text-slate-600">Stock Mínimo</th>
+                  <th>Producto</th>
+                  <th class="text-center">Stock actual</th>
+                  <th class="text-center">Stock mínimo</th>
                 </tr>
               </thead>
               <tbody>
                 @for (product of lowStockProducts(); track product.id) {
-                  <tr class="border-t border-slate-100">
-                    <td class="px-4 py-2">{{ product.nombre }}</td>
-                    <td class="px-4 py-2 text-orange-600 font-bold">{{ product.stock }}</td>
-                    <td class="px-4 py-2 text-slate-500">{{ product.stockMinimo }}</td>
+                  <tr>
+                    <td class="font-medium text-slate-900">{{ product.nombre }}</td>
+                    <td class="text-center"><span class="badge-warning">{{ product.stock }}</span></td>
+                    <td class="text-center text-slate-500 tabular-nums">{{ product.stockMinimo }}</td>
                   </tr>
                 }
               </tbody>
@@ -72,25 +99,31 @@ import { Product } from '../../../shared/models/product.model';
       }
 
       @if (expiringSoonProducts().length > 0) {
-        <div class="card mb-6">
-          <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-            <span>⏰</span> Productos Próximos a Vencer
-          </h2>
+        <div class="card mb-6 p-0 overflow-hidden">
+          <header class="flex items-center gap-2 px-6 py-4 border-b border-slate-100">
+            <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-yellow-100 text-yellow-600">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </span>
+            <h2 class="text-base font-semibold text-slate-800">Productos próximos a vencer</h2>
+          </header>
           <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-slate-50">
+            <table class="table">
+              <thead>
                 <tr>
-                  <th class="px-4 py-2 text-left text-sm font-medium text-slate-600">Producto</th>
-                  <th class="px-4 py-2 text-left text-sm font-medium text-slate-600">Lote</th>
-                  <th class="px-4 py-2 text-left text-sm font-medium text-slate-600">Fecha Caducidad</th>
+                  <th>Producto</th>
+                  <th>Lote</th>
+                  <th>Fecha caducidad</th>
                 </tr>
               </thead>
               <tbody>
                 @for (product of expiringSoonProducts(); track product.id) {
-                  <tr class="border-t border-slate-100">
-                    <td class="px-4 py-2">{{ product.nombre }}</td>
-                    <td class="px-4 py-2 text-slate-500">{{ product.lote || '-' }}</td>
-                    <td class="px-4 py-2 text-yellow-600">{{ product.fechaCaducidad | date:'dd/MM/yyyy' }}</td>
+                  <tr>
+                    <td class="font-medium text-slate-900">{{ product.nombre }}</td>
+                    <td class="text-slate-500">{{ product.lote || '—' }}</td>
+                    <td><span class="badge-warning">{{ product.fechaCaducidad | date:'dd/MM/yyyy' }}</span></td>
                   </tr>
                 }
               </tbody>
@@ -100,25 +133,31 @@ import { Product } from '../../../shared/models/product.model';
       }
 
       @if (expiredProducts().length > 0) {
-        <div class="card">
-          <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-            <span>❌</span> Productos Vencidos
-          </h2>
+        <div class="card p-0 overflow-hidden">
+          <header class="flex items-center gap-2 px-6 py-4 border-b border-slate-100">
+            <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100 text-red-600">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </span>
+            <h2 class="text-base font-semibold text-slate-800">Productos vencidos</h2>
+          </header>
           <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-slate-50">
+            <table class="table">
+              <thead>
                 <tr>
-                  <th class="px-4 py-2 text-left text-sm font-medium text-slate-600">Producto</th>
-                  <th class="px-4 py-2 text-left text-sm font-medium text-slate-600">Lote</th>
-                  <th class="px-4 py-2 text-left text-sm font-medium text-slate-600">Fecha Caducidad</th>
+                  <th>Producto</th>
+                  <th>Lote</th>
+                  <th>Fecha caducidad</th>
                 </tr>
               </thead>
               <tbody>
                 @for (product of expiredProducts(); track product.id) {
-                  <tr class="border-t border-slate-100">
-                    <td class="px-4 py-2">{{ product.nombre }}</td>
-                    <td class="px-4 py-2 text-slate-500">{{ product.lote || '-' }}</td>
-                    <td class="px-4 py-2 text-red-600">{{ product.fechaCaducidad | date:'dd/MM/yyyy' }}</td>
+                  <tr>
+                    <td class="font-medium text-slate-900">{{ product.nombre }}</td>
+                    <td class="text-slate-500">{{ product.lote || '—' }}</td>
+                    <td><span class="badge-danger">{{ product.fechaCaducidad | date:'dd/MM/yyyy' }}</span></td>
                   </tr>
                 }
               </tbody>
@@ -128,13 +167,18 @@ import { Product } from '../../../shared/models/product.model';
       }
 
       @if (lowStockProducts().length === 0 && expiringSoonProducts().length === 0 && expiredProducts().length === 0) {
-        <div class="card text-center py-12">
-          <span class="text-6xl mb-4">✅</span>
-          <p class="text-xl text-slate-600">No hay alertas pendientes</p>
+        <div class="card text-center py-16">
+          <span class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mb-4">
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </span>
+          <p class="text-lg font-semibold text-slate-800">Todo en orden</p>
+          <p class="text-sm text-slate-500 mt-1">No hay alertas pendientes en este momento</p>
         </div>
       }
     </div>
-  `
+  `,
 })
 export class AlertsDashboardComponent implements OnInit {
   private productService = inject(ProductService);
@@ -149,15 +193,15 @@ export class AlertsDashboardComponent implements OnInit {
 
   loadAlerts() {
     this.productService.getLowStock().subscribe({
-      next: (products) => this.lowStockProducts.set(products)
+      next: (products) => this.lowStockProducts.set(products),
     });
 
     this.productService.getExpiringSoon().subscribe({
-      next: (products) => this.expiringSoonProducts.set(products)
+      next: (products) => this.expiringSoonProducts.set(products),
     });
 
     this.productService.getExpired().subscribe({
-      next: (products) => this.expiredProducts.set(products)
+      next: (products) => this.expiredProducts.set(products),
     });
   }
 }
