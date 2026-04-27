@@ -1,0 +1,40 @@
+---
+description: Git Workflow - Ramas obligatorias para features, fixes y cambios
+globs: /**/*
+alwaysApply: true
+---
+
+# Git Workflow Obligatorio
+
+## Regla principal
+- **NUNCA trabajar directamente en `main`**. Crear rama específica para cada feature, fix, refactor o test [file:5][file:4].
+- Mantener `main` siempre limpia, estable y deployable [file:2].
+
+## Convención de ramas
+- `feat/nombre-corto-descriptivo` para nueva funcionalidad (ej: `feat/alertas-stock`).
+- `fix/nombre-corto-descriptivo` para correcciones (ej: `fix/rollback-stock`).
+- `refactor/nombre-corto-descriptivo` para refactorizaciones (ej: `refactor/invoices-pdf`).
+- `test/nombre-corto-descriptivo` para pruebas (ej: `test/sales-service`).
+- `docs/nombre-corto-descriptivo` para documentación (ej: `docs/api-swagger`).
+- `chore/nombre-corto-descriptivo` para tareas (ej: `chore/vercel-env`).
+- Máximo 3 palabras por nombre de rama, kebab-case [file:5].
+
+## Flujo de trabajo estricto
+1. `git checkout main` y `git pull origin main` (siempre actualizado).
+2. `git checkout -b feat/nombre-descriptivo`.
+3. Implementar con commits granulares (máx. 5 archivos, 150 líneas, una responsabilidad) [file:5].
+4. `git push origin feat/nombre-descriptivo`.
+5. Al finalizar: Crear Pull Request a `main`, revisar, merge y eliminar rama [file:5].
+6. **Prohibido**: `git commit` o `git push` directo a `main` [file:4].
+
+## Conventional Commits en español
+- Tipos: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `style` [file:5][file:2].
+- Formato: `tipo/alcance: descripción corta en español`.
+- Ejemplos válidos:
+  - `feat(pos): agregar componente SalePointComponent`
+  - `fix(sales): rollback cuando stock insuficiente`
+  - `test(auth): pruebas para login inválido` [file:5].
+
+## Prohibiciones
+- Commits grandes o que mezclen capas (frontend/backend/DB) [file:5].
+- Tipos inválidos como `update`, `change`, `wip` [file:5].

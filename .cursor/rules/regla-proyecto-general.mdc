@@ -1,0 +1,36 @@
+---
+description: Reglas centrales del proyecto POS Veterinaria Hermes
+globs: /**/*
+alwaysApply: true
+---
+
+# Reglas del proyecto
+
+## Stack técnico obligatorio
+- Frontend: Angular 21.0.2 + Tailwind CSS 4.0 + Flowbite [file:5][file:2].
+- Backend: NestJS 11.0.16 + TypeORM + PostgreSQL en Clever Cloud [file:5][file:2].
+- Despliegue: Vercel para frontend y backend exclusivamente [file:5][file:2].
+- Prohibido: React, Vue, Svelte, Bootstrap, Material UI, Daisy UI, Chakra UI, Express, Fastify, Prisma, Drizzle, Sequelize, MySQL, MongoDB, Docker, Podman, Railway, Render, Heroku o cualquier contenedor [file:5].
+
+## Generación de código
+- Nunca crear archivos de código manualmente si existe comando CLI oficial [file:5][file:4].
+- Todo componente, servicio, guard, interceptor, módulo, DTO o entidad debe generarse con Angular CLI o NestJS CLI [file:5].
+- Componentes Angular standalone con signals e `inject()` [file:4].
+
+## Diseño y calidad
+- UI responsive, limpia, enfocada en POS veterinario [file:2].
+- TypeScript estricto, sin `any` salvo justificación [file:4].
+- Tailwind CSS 4.0 CSS-first, Flowbite vanilla [file:2][file:4].
+- OnPush y change detection optimizada [file:4].
+
+## Pruebas
+- Toda funcionalidad nueva debe incluir pruebas Jest (backend) o configuración Angular (frontend) [file:4].
+- Priorizar stock, ventas, auth, facturación y RBAC [file:4][file:5].
+
+## Flujo de trabajo
+- Trabaja paso a paso, por etapas consolidadas [file:5].
+- No avances sin aprobación explícita del usuario [file:5].
+- Ante ambigüedad crítica, detente y pregunta [file:5].
+
+## Referencia principal
+- Toma como contexto el archivo `@agent.md` o `AGENTS.md` [file:5][file:4].
