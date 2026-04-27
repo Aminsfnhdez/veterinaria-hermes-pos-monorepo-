@@ -1,38 +1,59 @@
 @import "tailwindcss";
+@plugin "flowbite/plugin";
 
-/* Source para Tailwind scan - archivos src */
 @source "../src/**/*.html";
 @source "../src/**/*.ts";
+@source "../node_modules/flowbite";
 
 /* ===========================================
-   SISTEMA DE DISEÑO — Tailwind CSS 4.0 Only
-   Veterinaria Hermes POS
+   SISTEMA DE DISEÑO — Veterinaria Hermes POS
+   Tailwind CSS 4.0 + Flowbite
    =========================================== */
 
 @theme {
-  /* Primarios */
-  --color-primary: #2563eb;
-  --color-primary-dark: #1d4ed8;
-  --color-primary-light: #3b82f6;
-  
+  /* Marca veterinaria — escala teal */
+  --color-primary-50:  #f0fdfa;
+  --color-primary-100: #ccfbf1;
+  --color-primary-200: #99f6e4;
+  --color-primary-300: #5eead4;
+  --color-primary-400: #2dd4bf;
+  --color-primary-500: #14b8a6;
+  --color-primary-600: #0d9488;
+  --color-primary-700: #0f766e;
+  --color-primary-800: #115e59;
+  --color-primary-900: #134e4a;
+
+  --color-primary: #0d9488;
+  --color-primary-dark: #0f766e;
+  --color-primary-light: #14b8a6;
+
   /* Estados */
   --color-success: #10b981;
   --color-danger: #ef4444;
   --color-warning: #f59e0b;
-  
+  --color-info: #3b82f6;
+
   /* Superficie */
   --color-surface: #ffffff;
   --color-surface-muted: #f8fafc;
   --color-surface-hover: #f1f5f9;
-  
+
   /* Texto */
   --color-text-primary: #0f172a;
   --color-text-secondary: #475569;
   --color-text-muted: #94a3b8;
-  
+
   /* Frontera */
   --color-border: #e2e8f0;
-  --color-border-focus: #2563eb;
+  --color-border-focus: #0d9488;
+
+  /* Tipografía */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  /* Sombras */
+  --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 /* ===========================================
@@ -41,10 +62,20 @@
 
 @layer base {
   html {
-    font-family: system-ui, sans-serif;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  
-  /* Reduced motion support */
+
+  body {
+    @apply bg-slate-50 text-slate-900;
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -55,166 +86,289 @@
 }
 
 /* ===========================================
-   BOTONES
+   COMPONENTES
    =========================================== */
 
 @layer components {
+  /* ----- BOTONES (Flowbite-style) ----- */
   .btn-primary {
-    @apply bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md transition-all duration-200 cursor-pointer;
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
-    min-height: 44px;
+    @apply inline-flex items-center justify-center gap-2 text-white bg-primary-700 hover:bg-primary-800
+      focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5
+      transition-colors duration-150 cursor-pointer
+      disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-primary-700;
+    min-height: 42px;
   }
-  
+
   .btn-secondary {
-    @apply bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-md transition-all duration-200 cursor-pointer;
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
-    min-height: 44px;
+    @apply inline-flex items-center justify-center gap-2 text-slate-700 bg-white border border-slate-300
+      hover:bg-slate-50 hover:text-slate-900 focus:ring-4 focus:ring-slate-200 font-medium rounded-lg
+      text-sm px-5 py-2.5 transition-colors duration-150 cursor-pointer
+      disabled:opacity-60 disabled:cursor-not-allowed;
+    min-height: 42px;
   }
-  
+
   .btn-danger {
-    @apply bg-danger hover:bg-red-600 text-white px-4 py-2 rounded-md transition-all duration-200 cursor-pointer;
-    @apply focus:outline-none focus:ring-2 focus:ring-danger focus:ring-offset-2;
-    min-height: 44px;
+    @apply inline-flex items-center justify-center gap-2 text-white bg-red-600 hover:bg-red-700
+      focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5
+      transition-colors duration-150 cursor-pointer
+      disabled:opacity-60 disabled:cursor-not-allowed;
+    min-height: 42px;
   }
-  
+
   .btn-ghost {
-    @apply bg-transparent hover:bg-slate-100 text-slate-600 px-4 py-2 rounded-md transition-all duration-200 cursor-pointer;
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
-    min-height: 44px;
+    @apply inline-flex items-center justify-center gap-2 text-slate-600 bg-transparent hover:bg-slate-100
+      hover:text-slate-900 focus:ring-4 focus:ring-slate-200 font-medium rounded-lg text-sm px-5 py-2.5
+      transition-colors duration-150 cursor-pointer;
+    min-height: 42px;
   }
-  
+
+  .btn-link {
+    @apply inline-flex items-center gap-1 text-primary-700 hover:text-primary-800 hover:underline
+      font-medium text-sm cursor-pointer transition-colors;
+  }
+
   .btn-sm {
-    @apply px-3 py-1.5 text-sm;
-    min-height: 36px;
+    @apply px-3 py-1.5 text-xs;
+    min-height: 34px;
   }
-  
+
   .btn-lg {
-    @apply px-6 py-3 text-lg;
-    min-height: 52px;
+    @apply px-6 py-3 text-base;
+    min-height: 50px;
   }
-  
-  /* ===========================================
-     INPUTS
-     =========================================== */
-  
+
+  .btn-icon {
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-lg text-slate-500
+      hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary-300
+      transition-colors cursor-pointer;
+  }
+
+  /* ----- INPUTS ----- */
   .input-field {
-    @apply w-full px-3 py-2 border border-slate-300 rounded-md;
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
-    @apply transition-all duration-200;
-    min-height: 44px;
+    @apply block w-full p-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg
+      placeholder:text-slate-400
+      focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:outline-none
+      disabled:bg-slate-100 disabled:text-slate-500 disabled:cursor-not-allowed
+      transition-colors duration-150;
   }
-  
+
   .input-label {
-    @apply block text-sm font-medium text-slate-700 mb-1;
+    @apply block mb-1.5 text-sm font-medium text-slate-700;
   }
-  
+
   .input-helper {
-    @apply text-xs text-slate-500 mt-1;
+    @apply mt-1 text-xs text-slate-500;
   }
-  
+
   .input-error {
-    @apply border-danger focus:ring-danger;
+    @apply border-red-500 focus:ring-red-500 focus:border-red-500;
   }
-  
+
   .input-error-message {
-    @apply text-xs text-danger mt-1;
+    @apply mt-1 text-xs text-red-600;
   }
-  
-  /* ===========================================
-     CARDS
-     =========================================== */
-  
+
+  .input-required::after {
+    content: " *";
+    @apply text-red-500;
+  }
+
+  /* ----- CARDS ----- */
   .card {
-    @apply bg-white rounded-lg shadow-md p-6;
+    @apply bg-white rounded-xl border border-slate-200 shadow-sm p-6;
   }
-  
+
   .card-hover {
-    @apply bg-white rounded-lg shadow-md p-6;
-    @apply transition-shadow duration-200 hover:shadow-lg;
+    @apply bg-white rounded-xl border border-slate-200 shadow-sm p-6
+      transition-all duration-200 hover:shadow-md hover:border-slate-300;
   }
-  
-  .card-bordered {
-    @apply bg-white rounded-lg border border-slate-200 p-6;
+
+  .card-flat {
+    @apply bg-white rounded-xl border border-slate-200 p-6;
   }
-  
-  /* ===========================================
-     TABLAS
-     =========================================== */
-  
+
+  .card-header {
+    @apply flex items-center justify-between pb-4 mb-4 border-b border-slate-100;
+  }
+
+  .card-title {
+    @apply text-base font-semibold text-slate-800;
+  }
+
+  .card-subtitle {
+    @apply text-sm text-slate-500 mt-0.5;
+  }
+
+  /* ----- TABLAS (Flowbite-style) ----- */
   .table-container {
-    @apply w-full overflow-x-auto rounded-lg border border-slate-200;
+    @apply relative overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm;
   }
-  
+
   .table {
-    @apply w-full text-sm text-left;
+    @apply w-full text-sm text-left text-slate-700;
   }
-  
+
+  .table thead {
+    @apply text-xs uppercase text-slate-500 bg-slate-50 border-b border-slate-200;
+  }
+
   .table th {
-    @apply bg-slate-50 px-4 py-3 font-semibold text-slate-700 border-b border-slate-200;
+    @apply px-4 py-3 font-semibold tracking-wider;
   }
-  
+
   .table td {
-    @apply px-4 py-3 border-b border-slate-100;
+    @apply px-4 py-3 border-b border-slate-100 align-middle;
   }
-  
-  .table tr:hover td {
+
+  .table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  .table tbody tr {
+    @apply transition-colors;
+  }
+
+  .table tbody tr:hover {
     @apply bg-slate-50;
   }
-  
+
   .table td.actions {
     @apply text-right whitespace-nowrap;
   }
-  
-  /* ===========================================
-     BADGES / ESTADOS
-     =========================================== */
-  
+
+  .table-empty {
+    @apply px-6 py-12 text-center text-sm text-slate-500;
+  }
+
+  /* ----- BADGES (Flowbite-style) ----- */
   .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium
+      bg-slate-100 text-slate-700;
   }
-  
+
+  .badge-primary {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium
+      bg-primary-100 text-primary-800;
+  }
+
   .badge-success {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium
+      bg-green-100 text-green-800;
   }
-  
+
   .badge-warning {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium
+      bg-amber-100 text-amber-800;
   }
-  
+
   .badge-danger {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium
+      bg-red-100 text-red-800;
   }
-  
+
   .badge-info {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium
+      bg-blue-100 text-blue-800;
   }
-  
-  .badge-muted {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600;
+
+  .badge-purple {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium
+      bg-purple-100 text-purple-800;
   }
-  
-  /* ===========================================
-     UTILITARIOS
-     =========================================== */
-  
+
+  .badge-dot::before {
+    content: "";
+    @apply inline-block w-1.5 h-1.5 rounded-full bg-current mr-1;
+  }
+
+  /* ----- ALERTAS (Flowbite-style) ----- */
+  .alert {
+    @apply flex items-start gap-3 p-4 rounded-lg border text-sm;
+  }
+
+  .alert-info {
+    @apply flex items-start gap-3 p-4 rounded-lg border text-sm
+      bg-blue-50 border-blue-200 text-blue-800;
+  }
+
+  .alert-success {
+    @apply flex items-start gap-3 p-4 rounded-lg border text-sm
+      bg-green-50 border-green-200 text-green-800;
+  }
+
+  .alert-warning {
+    @apply flex items-start gap-3 p-4 rounded-lg border text-sm
+      bg-amber-50 border-amber-200 text-amber-900;
+  }
+
+  .alert-danger {
+    @apply flex items-start gap-3 p-4 rounded-lg border text-sm
+      bg-red-50 border-red-200 text-red-800;
+  }
+
+  /* ----- NAV / SIDEBAR ----- */
+  .sidebar-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700
+      hover:bg-slate-100 hover:text-slate-900 transition-colors duration-150;
+  }
+
+  .sidebar-link-active {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+      bg-primary-50 text-primary-800 hover:bg-primary-100;
+  }
+
+  .sidebar-icon {
+    @apply w-5 h-5 flex-shrink-0;
+  }
+
+  /* ----- ESTADISTICAS / KPI ----- */
+  .stat-card {
+    @apply relative overflow-hidden bg-white rounded-xl border border-slate-200 shadow-sm p-5
+      transition-all duration-200 hover:shadow-md;
+  }
+
+  .stat-icon {
+    @apply flex items-center justify-center w-11 h-11 rounded-lg;
+  }
+
+  .stat-value {
+    @apply text-2xl font-bold text-slate-900 leading-tight;
+  }
+
+  .stat-label {
+    @apply text-xs font-medium text-slate-500 uppercase tracking-wider;
+  }
+
+  /* ----- DROPDOWN PATTERN ----- */
+  .dropdown-panel {
+    @apply absolute z-20 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg
+      overflow-hidden;
+  }
+
+  .dropdown-item {
+    @apply w-full text-left px-4 py-2.5 text-sm text-slate-700
+      hover:bg-slate-50 focus:bg-slate-50 focus:outline-none transition-colors;
+  }
+
+  /* ----- UTILITARIOS ----- */
   .overlay {
     @apply fixed inset-0 bg-black/50 z-40;
   }
-  
+
   .skeleton {
     @apply animate-pulse bg-slate-200 rounded;
   }
-  
-  /* Visually hidden para accesibilidad */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+
+  .divider {
+    @apply border-t border-slate-200 my-4;
+  }
+
+  /* Spinner Flowbite */
+  .spinner {
+    @apply inline-block w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin;
+  }
+
+  .spinner-lg {
+    @apply inline-block w-10 h-10 border-4 border-primary-600 border-t-transparent rounded-full animate-spin;
   }
 }
