@@ -172,14 +172,15 @@ vercel --prod
 
 ### Diseño
 
-- **Tailwind CSS 4.0**: CSS-first config
-- **Flowbite**: Componentes preconstruidos
-- **Responsive**: Mobile-first
-- **Modo oscuro**: No implementado en v1
+- **Tailwind CSS 4.0**: configuración CSS-first
+- **Flowbite**: patrón visual base para layout, formularios, tablas y alertas
+- **Sistema UI unificado**: tokens, utilidades y wrappers compartidos en `styles.css`
+- **Responsive**: mobile-first con sidebar adaptable
+- **Modo oscuro**: no implementado en v1
 
 ### Colores
 
-- Primario: Emerald (veterinario)
+- Primario: Teal veterinario (`#0d9488`)
 - Fondo: Blanco/Gris claro
 - Texto: Gris oscuro
 
