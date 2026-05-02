@@ -9,8 +9,18 @@ async function getApp() {
   const { AppModule } = require('../dist/app.module');
   const app = await NestFactory.create(AppModule);
 
-  const origin = process.env.FRONTEND_URL || 'http://localhost:4200';
-  app.enableCors({ origin, credentials: true });
+  app.enableCors({
+    origin: (requestOrigin, callback) => {
+      if (!requestOrigin || requestOrigin.startsWith('http://localhost')) {
+        callback(null, true);
+      } else if (requestOrigin.includes('veterinaria-hermes-pos-monorepo-front')) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Veterinaria Hermes POS API')
