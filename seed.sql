@@ -1,4 +1,4 @@
--- Veterinaria Hermes POS — datos de prueba (Etapa 2)
+-- Veterinaria Hermes POS  datos de prueba (Etapa 2)
 -- Ejecutar después de schema.sql sobre la misma base.
 -- Contraseña de seed para ambos usuarios: HermesSeed2026!  (solo desarrollo; bcrypt 12 rounds)
 

@@ -58,3 +58,7 @@ frontend/.angular/
 
 # OpenCode
 .opencode/*
+
+# Agent skills
+.agents/
+skills-lock.json
