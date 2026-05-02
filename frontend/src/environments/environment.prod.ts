@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://hermes-pos-backend.vercel.app'
+  apiUrl: 'https://veterinaria-hermes-pos-monorepo-back.vercel.app'
 };
